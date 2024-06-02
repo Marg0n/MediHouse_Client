@@ -14,6 +14,7 @@ Resources:
 - [TailwindCSS](https://tailwindcss.com/)
 - [React Router Dom](https://reactrouter.com/en/main)
 - [React Hook Form](https://react-hook-form.com/)
+- [TanStack Query](https://www.npmjs.com/package/@tanstack/react-query)
 - [react-helmet-async](https://www.npmjs.com/package/react-helmet-async)
 - [Firebase](https://console.firebase.google.com)
 - [Tailwindcss Buttons](https://devdojo.com/tailwindcss/buttons)
