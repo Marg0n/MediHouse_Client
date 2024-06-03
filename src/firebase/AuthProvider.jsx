@@ -3,6 +3,7 @@ import {
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
     onAuthStateChanged,
+    sendPasswordResetEmail,
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
@@ -64,38 +65,40 @@ const AuthProvider = ({ children }) => {
         })
     };
 
+    // Reset Password
+    const resetPassword = email => {
+        setLoading(true)
+        return sendPasswordResetEmail(auth, email)
+    }
+
     // logout onauthstatechange
-    const loggedOut = async() => {
+    const loggedOut = async () => {
         setLoading(true);
-        // await axios.get(`${import.meta.env.VITE_SERVER}/logout`,{withCredentials: true});
+        await axios.get(`${import.meta.env.VITE_SERVER}/logout`, { withCredentials: true });
         setUser(null);
         setLoading(false);
         return signOut(auth);
-        // try {
-        //     setLoading(true);
-        //     const response = await axios.get(`${import.meta.env.VITE_SERVER}/logout`, {
-        //       withCredentials: true,
-        //     });
-        
-        //     if (response.data.success) {
-        //       setUser(null);
-        //       await signOut(auth);
-        //     } else {
-        //       console.error('Logout failed');
-        //     }
-        //   } catch (error) {
-        //     console.error('Error logging out:', error);
-        //   } finally {
-        //     setLoading(false);
-        //   }
     };
+
+    // Get token from server
+    const getToken = async email => {
+        const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            { email },
+            { withCredentials: true }
+        )
+        return data
+    }
 
     // Observer
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
 
             setUser(currentUser);
-
+            //token get
+            if (currentUser) {
+                getToken(currentUser.email)
+            }
             setLoading(false);
         });
 
@@ -115,6 +118,7 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         updateUserProfile,
+        resetPassword,
     };
 
     return (

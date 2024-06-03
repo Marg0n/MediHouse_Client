@@ -1,137 +1,173 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { RxEyeClosed } from "react-icons/rx";
 import { TfiEye } from "react-icons/tfi";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import bgImg from '../../assets/images/register.png';
 import Loader from '../../components/shared/Loader';
 import useAuth from "../../hooks/useAuth";
 import logo from '/logo_mediHouse.png';
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 
 const Registration = () => {
 
-    const { createUser, user, updateUserProfile, loggedOut, googleLogin, gitHubLogin } = useAuth();
+    const { createUser, user, updateUserProfile, loggedOut, googleLogin, gitHubLogin, loading, setLoading } = useAuth();
+
 
     // custom loader for registration
     const [customLoader, setCustomLoader] = useState(false);
 
-    // password show
+    // password and confirm pass show
     const [passShow, setPassShow] = useState('');
     const [cpassShow, setCpassShow] = useState('');
 
     // Navigation
     const navigate = useNavigate();
-    const whereTo = '/login';
+    const location = useLocation();
+    const whereTo = location?.state || '/login';
 
     // react form
     const {
         register,
         handleSubmit,
-        // watch,
+        watch,
         formState: { errors },
     } = useForm()
+    
+    const pass = watch('password');
+    const dist = watch('district');
+    const upz = watch('upazila');
 
-    const onSubmit = (data) => {
-        // const { email, password, name, photoURL, bloodGroup, confirmPassword } = data;
-        console.table(data);
 
-/*
-        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()[\]{}|\\;:'",.<>/?~])(?=.{6,})/.test(password)) {
-
-            // console.log(watch('password'))
-            return toast.error(
-                `Password must contain 
-        an Uppercase, 
-        a Lowercase, 
-        a numeric character, 
-        a special character 
-        and Length must be at least 6 characters long!`,
-                { autoClose: 4000, theme: "colored" })
+    const {data: districts=[], isLoading} = useQuery({
+        queryKey: ['districts', dist],
+        queryFn: async() =>{
+            const {data} = await axios('/districts.json')
+            return data
         }
+    })
 
-        // create user profile and update user
-        createUser(email, password)
-            .then(() => {
-                // Add or update other data except email and pass
-                updateUserProfile(name, photoURL)
+    const {data: upazilas=[]} = useQuery({
+        queryKey: ['upazilas', upz],
+        queryFn: async() =>{
+            const {data} = await axios.get('/upazilas.json')
+            return data
+        }
+    })
+
+    // react form with state changes and updates state when the state changes
+    const onSubmit = (data, e) => {
+        const { email, password, name, bloodGroup, district, upazila, } = data;
+
+
+        const avatar = e.target.avatar.files[0]
+        const formData = new FormData();
+        formData.append('avatar', avatar)
+        console.log(formData);
+
+        const status = 'active'
+
+        console.table({ email, password, name, bloodGroup, district, upazila, status, formData });
+        console.log({ email, password, name, bloodGroup, district, upazila, status, formData });
+
+        /*
+                if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()[\]{}|\\;:'",.<>/?~])(?=.{6,})/.test(password)) {
+        
+                    // console.log(watch('password'))
+                    return toast.error(
+                        `Password must contain 
+                an Uppercase, 
+                a Lowercase, 
+                a numeric character, 
+                a special character 
+                and Length must be at least 6 characters long!`,
+                        { autoClose: 4000, theme: "colored" })
+                }
+        
+                // create user profile and update user
+                createUser(email, password)
                     .then(() => {
-
-                        setCustomLoader(true)
-                        // Profile updated!
-                        toast.success("Registration successful!🎉", { autoClose: 3000, theme: "colored" })
-                        toast.info("Try to Login! 😁", { autoClose: 5000, theme: "colored" })
-
-                        // loader
+                        // Add or update other data except email and pass
+                        updateUserProfile(name, avatar)
+                            .then(() => {
+        
+                                setCustomLoader(true)
+                                // Profile updated!
+                                toast.success("Registration successful!🎉", { autoClose: 3000, theme: "colored" })
+                                toast.info("Try to Login! 😁", { autoClose: 5000, theme: "colored" })
+        
+                                // loader
+                                setCustomLoader(false)
+                                loggedOut();
+                                navigate(whereTo, { replace: true })
+        
+                            }).catch((errors) => {
+        
+                                setCustomLoader(false)
+                                // An error occurred
+                                const errorMessage = errors.message.split(':')[1].split('(')[0].trim();
+        
+                                toast.error(errorMessage, { autoClose: 3000, theme: "colored" });
+                                navigate('/register');
+                            });
+        
+                        // console.log(result)
+        
+                    })
+                    .catch(errors => {
+        
                         setCustomLoader(false)
-                        loggedOut();
-                        navigate(whereTo, { replace: true })
-
-                    }).catch((errors) => {
-
-                        setCustomLoader(false)
-                        // An error occurred
-                        const errorMessage = errors.message.split(':')[1].split('(')[0].trim();
-
-                        toast.error(errorMessage, { autoClose: 3000, theme: "colored" });
+                        // An error occurred                
+                        const errorCode = errors.code;
+                        // Remove 'auth/' prefix and '-' characters
+                        const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
+                        const words = cleanedErrorCode.split('-');
+                        const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
+                        const message = capitalizedWords.join(' ');
+        
+                        toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
                         navigate('/register');
-                    });
-
-                // console.log(result)
-
-            })
-            .catch(errors => {
-
-                setCustomLoader(false)
-                // An error occurred                
-                const errorCode = errors.code;
-                // Remove 'auth/' prefix and '-' characters
-                const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
-                const words = cleanedErrorCode.split('-');
-                const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
-                const message = capitalizedWords.join(' ');
-
-                toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
-                navigate('/register');
-            })
-                */
+                    })
+                        */
     }
 
     // Navigation handler for all social platform
-    const handleSocialLogin = socialLoginProvider => {
-        socialLoginProvider()
-            .then(result => {
-                if (result.user) {
-                    toast.success("Logged in successful!🎉", { autoClose: 2000, theme: "colored" })
-                    navigate(whereTo)
-                }
-            })
-            .catch(error => {
-                const errorCode = error.code;
-                // Remove 'auth/' prefix and '-' characters
-                const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
-                const words = cleanedErrorCode.split('-');
-                const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
-                const message = capitalizedWords.join(' ');
+    // const handleSocialLogin = socialLoginProvider => {
+    //     socialLoginProvider()
+    //         .then(result => {
+    //             if (result.user) {
+    //                 toast.success("Logged in successful!🎉", { autoClose: 2000, theme: "colored" })
+    //                 navigate(whereTo)
+    //             }
+    //         })
+    //         .catch(error => {
+    //             const errorCode = error.code;
+    //             // Remove 'auth/' prefix and '-' characters
+    //             const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
+    //             const words = cleanedErrorCode.split('-');
+    //             const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
+    //             const message = capitalizedWords.join(' ');
 
-                toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
-                navigate('/login')
-            })
-    }
+    //             toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
+    //             navigate('/login')
+    //         })
+    // }
 
     // Custom loader
-    if (customLoader) {
+    if (customLoader || loading || isLoading) {
         return <Loader />;
     }
 
     if (user && location?.pathname == '/login' && location?.state == null) {
         // toast.info(`Dear, ${user?.displayName || user?.email}! You are already Logged in!`, { autoClose: 3000, theme: "colored" });
-        return <Navigate to='/' state={location?.pathname || '/'} />
+        return <Navigate to='/' state={whereTo} />
     }
 
 
@@ -140,6 +176,7 @@ const Registration = () => {
             <Helmet>
                 <title>Medi House 🩺 | Register</title>
             </Helmet>
+
             <div className='flex w-full max-w-sm mx-auto overflow-hidden rounded-lg shadow-lg  lg:max-w-4xl  border border-base-300'>
                 <div className='w-full px-6 py-8 md:px-8 lg:w-1/2'>
                     <div className='flex justify-center mx-auto'>
@@ -154,7 +191,7 @@ const Registration = () => {
                         Get Your Free Account Now!
                     </p>
 
-                    <div
+                    {/* <div
                         onClick={() => handleSocialLogin(googleLogin)}
                         className='flex cursor-pointer items-center justify-center mt-4 transition-colors duration-300 transform border rounded-lg   hover:scale-105 hover:bg-secondary overflow-hidden '>
                         <div className='px-4 py-2'>
@@ -176,13 +213,13 @@ const Registration = () => {
                         <span className='w-5/6 px-4 py-3 font-bold text-center'>
                             Log in with GitHub
                         </span>
-                    </div>
+                    </div> */}
 
                     <div className='flex items-center justify-between mt-4'>
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
 
                         <div className='text-xs text-center uppercase  hover:underline'>
-                            or Registration with email
+                            Registration with email
                         </div>
 
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
@@ -210,26 +247,6 @@ const Registration = () => {
                             </div>
                         </div>
 
-                        {/* photo */}
-                        <div className='mt-4'>
-                            <label
-                                className='block mb-2 text-sm font-medium '
-                                htmlFor='photo'
-                            >
-                                Photo URL
-                            </label>
-                            <input
-                                id='photo'
-                                autoComplete='photo'
-                                name='photo'
-                                className='block w-full px-4 py-2 border rounded-lg input input-bordered   focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
-                                type='text'
-                                {...register("photoURL"
-                                    // , { required: true }
-                                )}
-                            />
-                        </div>
-
                         {/* blood group */}
                         <div>
                             <label className="form-control w-full ">
@@ -241,7 +258,7 @@ const Registration = () => {
                                     name="bloodGroup"
                                     {...register("bloodGroup", { required: true })}
                                 >
-                                    <option value="">Blood Group</option>
+                                    <option value="">Select Blood Group</option>
                                     <option value='A+'>A+</option>
                                     <option value='A-'>A-</option>
                                     <option value='B+'>B+</option>
@@ -256,9 +273,55 @@ const Registration = () => {
                                 {errors.bloodGroup && <span className="text-red-500">Please select a Blood Group</span>}
                             </div>
                         </div>
-                        
+
                         {/* district */}
+                        <div>
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">District</span>
+                                </div>
+                                <select
+                                    className="select select-bordered w-full rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    name="district"
+                                    {...register("district", { required: "Please select a District" })}
+                                >
+                                    <option value="">Select District</option>
+                                    {
+                                        districts.map(district =>{
+                                            return (<option key={district.id} value={(e)=> e.target.value}>{district.name}</option>)
+                                        } )
+                                    }
+                                    
+                                </select>
+                            </label>
+                            <div className="mt-1 animate-pulse">
+                                {errors.district && <span className="text-red-500">{errors.district.message}</span>}
+                            </div>
+                        </div>
+
                         {/* upazila */}
+                        <div>
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">Upazila</span>
+                                </div>
+                                <select
+                                    className="select select-bordered w-full rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    name="upazila"
+                                    {...register("upazila", { required: true })}
+                                >
+                                    <option value="">Select Upazila</option>
+                                    {
+                                        upazilas.map(upazila =>{
+                                            return (<option key={upazila.id} value={(e)=> e.target.value}>{upazila.name}</option>)
+                                        } )
+                                    }
+                                </select>
+                            </label>
+                            <div className="mt-1 animate-pulse">
+                                {errors.upazila && <span className="text-red-500">Please select a Upazila</span>}
+                            </div>
+                        </div>
 
                         {/* email */}
                         <div className='mt-4'>
@@ -329,8 +392,11 @@ const Registration = () => {
                                 autoComplete='current-password'
                                 name='confirmPassword'
                                 className='block w-full px-4 py-2 border rounded-lg  input input-bordered  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
-                                type={passShow ? "text" : "password"}
-                                {...register("confirmPassword", { required: true })}
+                                type={cpassShow ? "text" : "password"}
+                                {...register("confirmPassword", {
+                                    required: "Please fill up the Confirm Password field",
+                                    validate: value => value === pass || "Passwords do not match"
+                                })}
                             />
                             <span
                                 onClick={() => setCpassShow(!cpassShow)}
@@ -341,7 +407,27 @@ const Registration = () => {
                                 }
                             </span>
                             <div className="mt-1 animate-pulse">
-                                {errors.confirmPassword && <span className="text-red-500">Please fill up Confirm Password field</span>}
+                                {errors.confirmPassword && <span className="text-red-500">{errors.confirmPassword.message}</span>}
+                            </div>
+                        </div>
+
+                        {/* photo */}
+                        <div className='mt-4'>
+                            <label htmlFor='image' className='block mb-2 text-sm  font-medium '>
+                                Upload Avatar:
+                            </label>
+
+                            <input
+                                // required
+                                className=' block w-full px-4 py-2 rounded-lg input  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300 file-input-success border-none'
+                                type='file'
+                                id='avatar'
+                                name='avatar'
+                                accept='image/*'
+                                {...register("avatar", { required: true })}
+                            />
+                            <div className="mt-1 animate-pulse">
+                                {errors.avatar && <span className="text-red-500">Please upload an Avatar</span>}
                             </div>
                         </div>
 
