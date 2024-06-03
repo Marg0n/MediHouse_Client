@@ -68,7 +68,7 @@ const Navbar = () => {
 
   const handleToggle = (e) => {
     if (e.target.checked) {
-      setTheme('dim');
+      setTheme('aqua');
     } else {
       setTheme('cupcake');
     }

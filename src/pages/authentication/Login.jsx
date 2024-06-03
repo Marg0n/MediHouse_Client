@@ -119,7 +119,7 @@ const Login = () => {
             <Helmet>
                 <title>Medi House 🩺 | Login</title>
             </Helmet>
-            <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl '>
+            <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl  border border-base-300'>
                 <div
                     className='hidden bg-cover bg-center lg:block lg:w-1/2'
                     style={{
