@@ -1,24 +1,16 @@
 "usue clients"
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet-async';
-import Loader from "../components/Loader";
-import Slider from "../components/Slider";
-// import logo from '/wordInsight_logo.jpeg';
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { AttentionSeeker } from "react-awesome-reveal";
-import { useLoaderData } from "react-router-dom";
 import { Cursor, useTypewriter } from 'react-simple-typewriter';
-import Compliments from "../components/Compliments";
-import Newsletter from "../components/Newsletter";
-import RecentBlogs from "../components/RecentBlogs";
+import Loader from "../components/shared/Loader";
 
 
 
 const Home = () => {
 
-    const allBlogs = useLoaderData();
-
-
+    
     // loader
     const [loading, setLoading] = useState(true);
 
@@ -67,7 +59,7 @@ const Home = () => {
                 </div>
 
                 {/* recent 6 blogs */}
-                <div className="my-16">
+                {/* <div className="my-16">
                     <div className="text-center my-6 space-y-4">
                         <AttentionSeeker effect='rubberBand' >
                             <h3 className="text-3xl font-serif text-center">
@@ -84,10 +76,10 @@ const Home = () => {
                         }
                     </div>
 
-                </div>
+                </div> */}
 
                 {/* newsletter */}
-                <div className="my-16">
+                {/* <div className="my-16">
                     <div className="text-center my-6 space-y-4">
                         <AttentionSeeker effect='headShake' >
                             <h3 className="text-3xl font-serif text-center">
@@ -97,10 +89,10 @@ const Home = () => {
                     </div>
 
                     <Newsletter />
-                </div>
+                </div> */}
 
                 {/* slider */}
-                <div className="my-16">
+                {/* <div className="my-16">
                     <div className="text-center my-6 space-y-4">
                         <AttentionSeeker effect='jello' >
                             <h3 className="text-3xl font-serif text-center">
@@ -114,11 +106,11 @@ const Home = () => {
                         <Slider allBlogs={allBlogs} />
                     </div>
 
-                </div>
+                </div> */}
 
 
                 {/* what to expect */}
-                <div className="my-16">
+                {/* <div className="my-16">
                     <div className="text-center my-6 space-y-4">
                         <AttentionSeeker effect='heartBeat' >
                             <h3 className="flex text-3xl font-serif items-center justify-center mb-8">
@@ -147,7 +139,7 @@ const Home = () => {
 
                         <Compliments />
                     </div>
-                </div>
+                </div> */}
             </div>
         </>
     );

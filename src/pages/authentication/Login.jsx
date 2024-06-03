@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import bgImg from '../../assets/images/login.png';
 import Loader from '../../components/shared/Loader';
 import useAuth from "../../hooks/useAuth";
-import logo from '/wordInsight_logo.jpeg';
+import logo from '/logo_mediHouse.png';
 
 
 const Login = () => {

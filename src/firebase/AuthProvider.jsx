@@ -66,27 +66,28 @@ const AuthProvider = ({ children }) => {
 
     // logout onauthstatechange
     const loggedOut = async() => {
-        // setLoading(true);
-        // await axios(`${import.meta.env.VITE_SERVER}/logout`,{withCredentials: true});
-        // setUser(null);
-        // return signOut(auth);
-        try {
-            setLoading(true);
-            const response = await axios.get(`${import.meta.env.VITE_SERVER}/logout`, {
-              withCredentials: true,
-            });
+        setLoading(true);
+        // await axios.get(`${import.meta.env.VITE_SERVER}/logout`,{withCredentials: true});
+        setUser(null);
+        setLoading(false);
+        return signOut(auth);
+        // try {
+        //     setLoading(true);
+        //     const response = await axios.get(`${import.meta.env.VITE_SERVER}/logout`, {
+        //       withCredentials: true,
+        //     });
         
-            if (response.data.success) {
-              setUser(null);
-              await signOut(auth);
-            } else {
-              console.error('Logout failed');
-            }
-          } catch (error) {
-            console.error('Error logging out:', error);
-          } finally {
-            setLoading(false);
-          }
+        //     if (response.data.success) {
+        //       setUser(null);
+        //       await signOut(auth);
+        //     } else {
+        //       console.error('Logout failed');
+        //     }
+        //   } catch (error) {
+        //     console.error('Error logging out:', error);
+        //   } finally {
+        //     setLoading(false);
+        //   }
     };
 
     // Observer

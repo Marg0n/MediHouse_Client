@@ -29,6 +29,6 @@ Resources:
 - [Swiper](https://swiperjs.com/)
 - [React Awesome Reveal](https://www.npmjs.com/package/react-awesome-reveal)
 - [React Simple Typewriter](https://www.npmjs.com/package/react-simple-typewriter#react-simple-typewriter)
-- [React Tooltip](https://react-tooltip.com/docs)
+- [React Tooltip](https://react-tooltip.com)
 - [Meraki UI - Components](https://merakiui.com/components)
 - [framer-motion](https://www.framer.com/motion/)
