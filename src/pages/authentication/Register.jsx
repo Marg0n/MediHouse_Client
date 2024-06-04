@@ -18,7 +18,7 @@ import axios from "axios";
 
 const Registration = () => {
 
-    const { createUser, user, updateUserProfile, loggedOut, googleLogin, gitHubLogin, loading, setLoading } = useAuth();
+    const { createUser, user, updateUserProfile, loggedOut, loading, setLoading } = useAuth();
 
 
     // custom loader for registration
@@ -42,12 +42,10 @@ const Registration = () => {
     } = useForm()
     
     const pass = watch('password');
-    const dist = watch('district');
-    const upz = watch('upazila');
 
 
     const {data: districts=[], isLoading} = useQuery({
-        queryKey: ['districts', dist],
+        queryKey: ['districts'],
         queryFn: async() =>{
             const {data} = await axios('/districts.json')
             return data
@@ -55,7 +53,7 @@ const Registration = () => {
     })
 
     const {data: upazilas=[]} = useQuery({
-        queryKey: ['upazilas', upz],
+        queryKey: ['upazilas'],
         queryFn: async() =>{
             const {data} = await axios.get('/upazilas.json')
             return data
@@ -66,7 +64,6 @@ const Registration = () => {
     const onSubmit = (data, e) => {
         const { email, password, name, bloodGroup, district, upazila, } = data;
 
-
         const avatar = e.target.avatar.files[0]
         const formData = new FormData();
         formData.append('avatar', avatar)
@@ -74,8 +71,8 @@ const Registration = () => {
 
         const status = 'active'
 
-        console.table({ email, password, name, bloodGroup, district, upazila, status, formData });
-        console.log({ email, password, name, bloodGroup, district, upazila, status, formData });
+        // console.table({ email, password, name, bloodGroup, district, upazila, status, formData });
+        const userInfo ={ email, password, name, bloodGroup, district, upazila, status, formData };
 
         /*
                 if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()[\]{}|\\;:'",.<>/?~])(?=.{6,})/.test(password)) {
@@ -288,7 +285,10 @@ const Registration = () => {
                                     <option value="">Select District</option>
                                     {
                                         districts.map(district =>{
-                                            return (<option key={district.id} value={(e)=> e.target.value}>{district.name}</option>)
+                                            return (<option key={district.id}
+                                                 value={`${district.name}`}
+                                                //  value={(e)=> e.target.value}
+                                                 >{district.name}</option>)
                                         } )
                                     }
                                     
@@ -313,7 +313,9 @@ const Registration = () => {
                                     <option value="">Select Upazila</option>
                                     {
                                         upazilas.map(upazila =>{
-                                            return (<option key={upazila.id} value={(e)=> e.target.value}>{upazila.name}</option>)
+                                            return (<option key={upazila.id}
+                                                 value={`${upazila.name}`}
+                                            >{upazila.name}</option>)
                                         } )
                                     }
                                 </select>

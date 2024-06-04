@@ -16,7 +16,7 @@ import logo from '/logo_mediHouse.png';
 
 const Login = () => {
 
-    const { signInUser, googleLogin, gitHubLogin, user } = useAuth();
+    const { signInUser, user } = useAuth();
 
     // custom loader for login
     const [customLoader, setCustomLoader] = useState(false);
@@ -119,6 +119,7 @@ const Login = () => {
             <Helmet>
                 <title>Medi House 🩺 | Login</title>
             </Helmet>
+
             <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl  border border-base-300'>
                 <div
                     className='hidden bg-cover bg-center lg:block lg:w-1/2'
@@ -140,7 +141,7 @@ const Login = () => {
                         Welcome back!
                     </p>
 
-                    <div
+                    {/* <div
                         onClick={() => handleSocialLogin(googleLogin)}
                         className='flex cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg    hover:scale-105 hover:bg-primary overflow-hidden'>
                         <div className='px-4 py-2'>
@@ -179,7 +180,7 @@ const Login = () => {
                         <span className='w-5/6 px-4 py-3 font-bold text-center'>
                             Log in with GitHub
                         </span>
-                    </div>
+                    </div> */}
 
                     <div className='flex items-center justify-between mt-4'>
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>

@@ -74,7 +74,7 @@ const AuthProvider = ({ children }) => {
     // logout onauthstatechange
     const loggedOut = async () => {
         setLoading(true);
-        await axios.get(`${import.meta.env.VITE_SERVER}/logout`, { withCredentials: true });
+        await axios.post(`${import.meta.env.VITE_SERVER}/logout`, { withCredentials: true });
         setUser(null);
         setLoading(false);
         return signOut(auth);
@@ -87,6 +87,7 @@ const AuthProvider = ({ children }) => {
             { email },
             { withCredentials: true }
         )
+        console.log(data)
         return data
     }
 
