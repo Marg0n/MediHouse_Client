@@ -201,7 +201,7 @@ const Registration = () => {
                 <title>Medi House 🩺 | Register</title>
             </Helmet>
 
-            <div className='flex w-full max-w-sm mx-auto overflow-hidden rounded-lg shadow-lg  lg:max-w-4xl  border border-base-300'>
+            <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-base-100 rounded-lg shadow-lg  lg:max-w-4xl  border border-base-300'>
                 <div className='w-full px-6 py-8 md:px-8 lg:w-1/2'>
                     <div className='flex justify-center mx-auto'>
                         <img
@@ -242,7 +242,7 @@ const Registration = () => {
                     <div className='flex items-center justify-between mt-4'>
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
 
-                        <div className='text-xs text-center uppercase  hover:underline'>
+                        <div className='text-xs text-center uppercase '>
                             Registration with email
                         </div>
 
@@ -397,7 +397,7 @@ const Registration = () => {
                             />
                             <span
                                 onClick={() => setPassShow(!passShow)}
-                                className="cursor-pointer absolute top-10 right-4 "
+                                className="cursor-pointer absolute top-11 right-4 "
                             >
                                 {
                                     passShow ? <TfiEye /> : <RxEyeClosed />
@@ -432,7 +432,7 @@ const Registration = () => {
                             />
                             <span
                                 onClick={() => setCpassShow(!cpassShow)}
-                                className="cursor-pointer absolute top-10 right-4"
+                                className="cursor-pointer absolute top-11 right-4"
                             >
                                 {
                                     cpassShow ? <TfiEye /> : <RxEyeClosed />

@@ -126,7 +126,7 @@ const Login = () => {
                 <title>Medi House 🩺 | Login</title>
             </Helmet>
 
-            <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl  border border-base-300'>
+            <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-base-100 rounded-lg shadow-lg  lg:max-w-4xl  border border-base-300'>
                 <div
                     className='hidden bg-cover bg-center lg:block lg:w-1/2'
                     style={{
@@ -143,7 +143,7 @@ const Login = () => {
                         />
                     </div>
 
-                    <p className='mt-3 text-xl text-center text-gray-600 '>
+                    <p className='mt-3 text-xl text-center '>
                         Welcome back!
                     </p>
 
@@ -191,7 +191,7 @@ const Login = () => {
                     <div className='flex items-center justify-between mt-4'>
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
 
-                        <div className='text-xs text-center text-gray-500 uppercase  hover:underline'>
+                        <div className='text-xs text-center uppercase  '>
                             login with email
                         </div>
 
@@ -200,7 +200,7 @@ const Login = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className='mt-4'>
                             <label
-                                className='block mb-2 text-sm font-medium text-gray-600 '
+                                className='block mb-2 text-sm font-medium  '
                                 htmlFor='LoggingEmailAddress'
                             >
                                 Email Address
@@ -209,7 +209,7 @@ const Login = () => {
                                 id='LoggingEmailAddress'
                                 autoComplete='email'
                                 name='email'
-                                className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
+                                className='block w-full px-4 py-2 input input-bordered rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                                 type='email'
                                 {...register("email", { required: true })}
                             />
@@ -221,7 +221,7 @@ const Login = () => {
                         <div className='mt-4 relative'>
                             <div className='flex justify-between'>
                                 <label
-                                    className='block mb-2 text-sm font-medium text-gray-600 '
+                                    className='block mb-2 text-sm font-medium  '
                                     htmlFor='loggingPassword'
                                 >
                                     Password
@@ -232,13 +232,13 @@ const Login = () => {
                                 id='loggingPassword'
                                 autoComplete='current-password'
                                 name='password'
-                                className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
+                                className='block w-full px-4 py-2 input input-bordered rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                                 type={passShow ? "text" : "password"}
                                 {...register("password", { required: true })}
                             />
                             <span
                                 onClick={() => setPassShow(!passShow)}
-                                className="cursor-pointer absolute top-10 right-4 text-black"
+                                className="cursor-pointer absolute top-11 right-4"
                             >
                                 {
                                     passShow ? <TfiEye /> : <RxEyeClosed />
