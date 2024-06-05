@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { FaGithub } from "react-icons/fa";
 import { RxEyeClosed } from "react-icons/rx";
 import { TfiEye } from "react-icons/tfi";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -72,46 +71,51 @@ const Login = () => {
     }
 
     // Navigation handler for all social platform
-    const handleSocialLogin = socialLoginProvider => {
-        socialLoginProvider()
-            .then(result => {
-                if (result.user) {
-                    // console.log(result.user)
-                    axios.post(`${import.meta.env.VITE_SERVER}/jwt`, {
-                        email: (result?.user?.email !== null ? result.user?.email : result.user?.displayName),
-                        // email: result?.user?.email,
-                    },
-                        { withCredentials: true }
-                    )
-                    // .then(res => {
-                    //   console.log(res.data)
-                    // })
-                    toast.success("Logged in successful!🎉", { autoClose: 2000, theme: "colored" })
-                    navigate(whereTo)
-                }
-            })
-            .catch(error => {
-                const errorCode = error.code;
-                // Remove 'auth/' prefix and '-' characters
-                const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
-                const words = cleanedErrorCode.split('-');
-                const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
-                const message = capitalizedWords.join(' ');
+    // const handleSocialLogin = socialLoginProvider => {
+    //     socialLoginProvider()
+    //         .then(result => {
+    //             if (result.user) {
+    //                 // console.log(result.user)
+    //                 axios.post(`${import.meta.env.VITE_SERVER}/jwt`, {
+    //                     email: (result?.user?.email !== null ? result.user?.email : result.user?.displayName),
+    //                     // email: result?.user?.email,
+    //                 },
+    //                     { withCredentials: true }
+    //                 )
+    //                 // .then(res => {
+    //                 //   console.log(res.data)
+    //                 // })
+    //                 toast.success("Logged in successful!🎉", { autoClose: 2000, theme: "colored" })
+    //                 navigate(whereTo)
+    //             }
+    //         })
+    //         .catch(error => {
+    //             const errorCode = error.code;
+    //             // Remove 'auth/' prefix and '-' characters
+    //             const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
+    //             const words = cleanedErrorCode.split('-');
+    //             const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
+    //             const message = capitalizedWords.join(' ');
 
-                toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
-                navigate('/login')
-            })
-    }
+    //             toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
+    //             navigate('/login')
+    //         })
+    // }
 
     // Custom loader
     if (customLoader) {
         return <Loader />;
     }
 
-    if (user && location?.pathname == '/login' && location?.state == null) {
-        // toast.info(`Dear, ${user?.displayName || user?.email}! You are already Logged in!`, { autoClose: 3000, theme: "colored" });
-        return <Navigate to='/' state={location?.pathname || '/'} />
+    if(user){
+        // toast.info('You are already Logged in!', { autoClose: 3000, theme: "colored" });
+        return <Navigate to='/' state={whereTo} />
     }
+
+    // if (user && location?.pathname == '/login' && location?.state == null) {
+    //     toast.info(`Dear, ${user?.displayName || user?.email}! You are already Logged in!`, { autoClose: 3000, theme: "colored" });
+    //     return <Navigate to='/' state={location?.pathname || '/'} />
+    // }
 
 
     return (

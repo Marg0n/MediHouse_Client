@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { FaGithub } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { RxEyeClosed } from "react-icons/rx";
 import { TfiEye } from "react-icons/tfi";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -14,11 +12,13 @@ import useAuth from "../../hooks/useAuth";
 import logo from '/logo_mediHouse.png';
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import useAxiosCommon from './../../hooks/useAxiosCommon';
 
 
 const Registration = () => {
 
     const { createUser, user, updateUserProfile, loggedOut, loading, setLoading } = useAuth();
+    const axiosCommon = useAxiosCommon();
 
 
     // custom loader for registration
@@ -31,7 +31,7 @@ const Registration = () => {
     // Navigation
     const navigate = useNavigate();
     const location = useLocation();
-    const whereTo = location?.state || '/login';
+    const whereTo = location?.state || '/';
 
     // react form
     const {
@@ -40,102 +40,124 @@ const Registration = () => {
         watch,
         formState: { errors },
     } = useForm()
-    
+
     const pass = watch('password');
 
 
-    const {data: districts=[], isLoading} = useQuery({
+    const { data: districts = [], isLoading } = useQuery({
         queryKey: ['districts'],
-        queryFn: async() =>{
-            const {data} = await axios('/districts.json')
+        queryFn: async () => {
+            const { data } = await axios('/districts.json')
             return data
         }
     })
 
-    const {data: upazilas=[]} = useQuery({
+    const { data: upazilas = [] } = useQuery({
         queryKey: ['upazilas'],
-        queryFn: async() =>{
-            const {data} = await axios.get('/upazilas.json')
+        queryFn: async () => {
+            const { data } = await axios.get('/upazilas.json')
             return data
         }
     })
 
     // react form with state changes and updates state when the state changes
-    const onSubmit = (data, e) => {
-        const { email, password, name, bloodGroup, district, upazila, } = data;
+    const onSubmit = async (data, e) => {
+        const { email, password, name, bloodGroup, district, upazila } = data;
 
-        const avatar = e.target.avatar.files[0]
+        const image = e.target.avatar.files[0]
         const formData = new FormData();
-        formData.append('avatar', avatar)
-        console.log(formData);
+        formData.append('image', image)
+        // console.log(formData);
 
-        const status = 'active'
+        const status = 'active';
+        const isAdmin = false;
 
         // console.table({ email, password, name, bloodGroup, district, upazila, status, formData });
-        const userInfo ={ email, password, name, bloodGroup, district, upazila, status, formData };
+        const userInfo = { email, name, bloodGroup, district, upazila, status, isAdmin };
 
-        /*
-                if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()[\]{}|\\;:'",.<>/?~])(?=.{6,})/.test(password)) {
-        
-                    // console.log(watch('password'))
-                    return toast.error(
-                        `Password must contain 
+        try {
+            setLoading(true);
+            // upload image and get image url
+            const { data: pic } = await axios.post(
+                `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+                formData
+            )
+
+            // insert user data in mongo DB
+            await axiosCommon.post('/users', userInfo)
+            console.table(userInfo);
+
+
+            if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[`!@#$%^&*()[\]{}|\\;:'",.<>/?~])(?=.{6,})/.test(password)) {
+
+                // console.log(watch('password'))
+                return toast.warning(
+                    `Password must contain 
                 an Uppercase, 
                 a Lowercase, 
                 a numeric character, 
                 a special character 
                 and Length must be at least 6 characters long!`,
-                        { autoClose: 4000, theme: "colored" })
-                }
-        
-                // create user profile and update user
-                createUser(email, password)
-                    .then(() => {
-                        // Add or update other data except email and pass
-                        updateUserProfile(name, avatar)
-                            .then(() => {
-        
-                                setCustomLoader(true)
-                                // Profile updated!
-                                toast.success("Registration successful!🎉", { autoClose: 3000, theme: "colored" })
-                                toast.info("Try to Login! 😁", { autoClose: 5000, theme: "colored" })
-        
-                                // loader
-                                setCustomLoader(false)
-                                loggedOut();
-                                navigate(whereTo, { replace: true })
-        
-                            }).catch((errors) => {
-        
-                                setCustomLoader(false)
-                                // An error occurred
-                                const errorMessage = errors.message.split(':')[1].split('(')[0].trim();
-        
-                                toast.error(errorMessage, { autoClose: 3000, theme: "colored" });
-                                navigate('/register');
-                            });
-        
-                        // console.log(result)
-        
-                    })
-                    .catch(errors => {
-        
-                        setCustomLoader(false)
-                        // An error occurred                
-                        const errorCode = errors.code;
-                        // Remove 'auth/' prefix and '-' characters
-                        const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
-                        const words = cleanedErrorCode.split('-');
-                        const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
-                        const message = capitalizedWords.join(' ');
-        
-                        toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
-                        navigate('/register');
-                    })
-                        */
+                    { autoClose: 4000, theme: "colored" })
+            }
+
+            // create user profile and update user
+            createUser(email, password)
+                .then(() => {
+                    // Add or update other data except email and pass
+                    updateUserProfile(name, pic.data.display_url)
+                        .then(async () => {
+
+                            setCustomLoader(true)
+
+                            // Profile updated!
+                            toast.success("Registration successful!🎉", { autoClose: 3000, theme: "colored" })
+                            toast.info("Try to Login! 😁", { autoClose: 5000, theme: "colored" })
+
+                            // loader
+                            setCustomLoader(false)
+                            loggedOut();
+                            navigate('/login')
+
+                        }).catch((errors) => {
+
+                            setCustomLoader(false)
+                            setLoading(false)
+                            // An error occurred
+                            const errorMessage = errors.message.split(':')[1].split('(')[0].trim();
+
+                            toast.error(errorMessage, { autoClose: 3000, theme: "colored" });
+                            navigate('/registration');
+                        });
+
+                    // console.log(result)
+
+                })
+                .catch(errors => {
+
+                    setCustomLoader(false)
+                    setLoading(false)
+                    // An error occurred                
+                    const errorCode = errors.code;
+                    // Remove 'auth/' prefix and '-' characters
+                    const cleanedErrorCode = errorCode.replace(/^auth\/|-/g, ' ');
+                    const words = cleanedErrorCode.split('-');
+                    const capitalizedWords = words.map(word => word.charAt(1).toUpperCase() + word.slice(2));
+                    const message = capitalizedWords.join(' ');
+
+                    toast.error(`${message}`, { autoClose: 5000, theme: "colored" })
+                    navigate('/registration');
+                })
+        }
+        catch (err) {
+            console.log(err);
+            toast.error(err.message);
+            setLoading(false)
+        }
+
     }
 
-    // Navigation handler for all social platform
+    // // Navigation handler for all social platform
     // const handleSocialLogin = socialLoginProvider => {
     //     socialLoginProvider()
     //         .then(result => {
@@ -162,10 +184,15 @@ const Registration = () => {
         return <Loader />;
     }
 
-    if (user && location?.pathname == '/login' && location?.state == null) {
+    if(user){
         // toast.info(`Dear, ${user?.displayName || user?.email}! You are already Logged in!`, { autoClose: 3000, theme: "colored" });
         return <Navigate to='/' state={whereTo} />
     }
+
+    // if (user && location?.pathname == '/login' && location?.state == null) {
+    //     // toast.info(`Dear, ${user?.displayName || user?.email}! You are already Logged in!`, { autoClose: 3000, theme: "colored" });
+    //     return <Navigate to='/' state={whereTo} />
+    // }
 
 
     return (
@@ -284,14 +311,14 @@ const Registration = () => {
                                 >
                                     <option value="">Select District</option>
                                     {
-                                        districts.map(district =>{
+                                        districts.map(district => {
                                             return (<option key={district.id}
-                                                 value={`${district.name}`}
-                                                //  value={(e)=> e.target.value}
-                                                 >{district.name}</option>)
-                                        } )
+                                                value={`${district.name}`}
+                                            //  value={(e)=> e.target.value}
+                                            >{district.name}</option>)
+                                        })
                                     }
-                                    
+
                                 </select>
                             </label>
                             <div className="mt-1 animate-pulse">
@@ -312,11 +339,11 @@ const Registration = () => {
                                 >
                                     <option value="">Select Upazila</option>
                                     {
-                                        upazilas.map(upazila =>{
+                                        upazilas.map(upazila => {
                                             return (<option key={upazila.id}
-                                                 value={`${upazila.name}`}
+                                                value={`${upazila.name}`}
                                             >{upazila.name}</option>)
-                                        } )
+                                        })
                                     }
                                 </select>
                             </label>
@@ -363,7 +390,10 @@ const Registration = () => {
                                 name='password'
                                 className='block w-full px-4 py-2 border rounded-lg  input input-bordered  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                                 type={passShow ? "text" : "password"}
-                                {...register("password", { required: true })}
+                                {...register("password", {
+                                    required: "Please fill up Password field",
+                                    // pattern: /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()[\]{}|\\;:'",.<>/?~])(?=.{6,})/ || "Password must contain an Uppercase, a Lowercase, a numeric character, a special character and Length must be at least 6 characters long!"
+                                })}
                             />
                             <span
                                 onClick={() => setPassShow(!passShow)}
@@ -374,7 +404,7 @@ const Registration = () => {
                                 }
                             </span>
                             <div className="mt-1 animate-pulse">
-                                {errors.password && <span className="text-red-500">Please fill up Password field</span>}
+                                {errors.password && <span className="text-red-500">{errors.password.message}</span>}
                             </div>
                         </div>
 

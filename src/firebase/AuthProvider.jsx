@@ -74,7 +74,7 @@ const AuthProvider = ({ children }) => {
     // logout onauthstatechange
     const loggedOut = async () => {
         setLoading(true);
-        await axios.post(`${import.meta.env.VITE_SERVER}/logout`, { withCredentials: true });
+        await axios(`${import.meta.env.VITE_SERVER}/logout`, { withCredentials: true });
         setUser(null);
         setLoading(false);
         return signOut(auth);
