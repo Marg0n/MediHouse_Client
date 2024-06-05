@@ -6,6 +6,8 @@ import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css';
 import logo from '/logo_mediHouse.png';
 import useAuth from './../../hooks/useAuth';
+import useAxiosCommon from '../../hooks/useAxiosCommon';
+import { useQuery } from '@tanstack/react-query';
 
 
 const Navbar = () => {
@@ -14,6 +16,20 @@ const Navbar = () => {
   const [theme, setTheme] = useState('cupcake');
   // State to track whether the dropdown is open or closed
   const [dropdown, setDropdown] = useState(false);
+
+  const axiosCommon = useAxiosCommon();
+
+  const { data: userData = [] } = useQuery({
+    queryKey: ['userData', user],
+    queryFn: async () => {
+        const { data } = await axiosCommon(`/users/${user?.email}`)
+        return data
+    }
+})
+
+// const { email, name, bloodGroup, district, upazila, status, isAdmin } = userData
+
+console.log(userData[0]?.isAdmin);
 
   const menuList = <>
     <li><NavLink to='/'>Home</NavLink></li>
@@ -68,7 +84,7 @@ const Navbar = () => {
 
   const handleToggle = (e) => {
     if (e.target.checked) {
-      setTheme('aqua');
+      setTheme('dim');
     } else {
       setTheme('cupcake');
     }
@@ -141,7 +157,9 @@ const Navbar = () => {
                     className="mt-3 z-[2] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-100 rounded-box w-64">
                     <li >
                       <p className="flex justify-center items-center">
-                        Hi, <span className=" text-blue-500 font-serif">
+                        Hi, 
+                        <span className="text-info badge-outline">{userData[0]?.isAdmin ? "Admin" : "User"}</span>
+                        <span className=" text-blue-500 font-serif">
                           {
                             user?.displayName || user?.email
                           }

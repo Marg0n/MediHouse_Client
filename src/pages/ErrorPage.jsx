@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link, useRouteError } from "react-router-dom";
+import { Link, Navigate, useLocation, useRouteError } from "react-router-dom";
 import Loader from "../components/shared/Loader";
+import useAuth from "../hooks/useAuth";
 
 
 
 const ErrorPage = () => {
 
     const error = useRouteError();
-    console.error(error);
+    // console.error(error);
+
+    const { user } = useAuth();
+
+    const location = useLocation();
+    const whereTo = location?.state || '/';
+
 
     // loader
     const [loading, setLoading] = useState(true);
@@ -19,6 +26,10 @@ const ErrorPage = () => {
 
         return () => clearTimeout(timer);
     }, []);
+
+    if(user){
+        return <Navigate to='/' state={whereTo} />
+    }
 
     return (
         <>
@@ -34,17 +45,31 @@ const ErrorPage = () => {
                         <h1 className='text-error text-xl lg:text-3xl font-bold'>Oops!</h1>
                         <p className='text-error text-xl lg:text-3xl font-semibold'>Sorry, an unexpected error has occurred!</p>
                         <p className='text-error text-xl lg:text-3xl font-semibold'>
-                            <i>{error.status}</i> :  <i>{error.statusText || error.message}</i>
+                            <i>{error.status || "Error"}</i> :  <i>{error.statusText || error.message}</i>
                         </p>
-                        <Link
-                            to='/'
-                            className="relative inline-block px-4 py-2 font-medium group">
-                            <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-primary group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
-                            <span className="absolute inset-0 w-full h-full bg-white border-2 border-secondary group-hover:bg-primary"></span>
-                            <span className="relative text-black group-hover:text-accent">
-                                Go To Home
-                            </span>
-                        </Link>
+                        <div className="flex gap-4 justify-center items-center">
+                            <Link
+                                to='/'
+                                className="relative inline-block px-4 py-2 font-medium group">
+                                <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-primary group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
+                                <span className="absolute inset-0 w-full h-full bg-white border-2 border-secondary group-hover:bg-primary"></span>
+                                <span className="relative text-black group-hover:text-accent">
+                                    Go To Home
+                                </span>
+                            </Link>
+                            {
+                                user && <Link
+                                    to='/dashboard'
+                                    className="relative inline-block px-4 py-2 font-medium group">
+                                    <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-primary group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
+                                    <span className="absolute inset-0 w-full h-full bg-white border-2 border-secondary group-hover:bg-primary"></span>
+                                    <span className="relative text-black group-hover:text-accent">
+                                        Go To Dashboard
+                                    </span>
+                                </Link>
+                            }
+
+                        </div>
                     </div>
             }
         </>

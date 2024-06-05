@@ -8,9 +8,12 @@ import useAuth from './useAuth'
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 })
+
 const useAxiosSecure = () => {
-  const { logOut } = useAuth()
+
+  const { loggedOut } = useAuth()
   const navigate = useNavigate()
+
   useEffect(() => {
     axiosSecure.interceptors.response.use(
       res => {
@@ -19,13 +22,13 @@ const useAxiosSecure = () => {
       async error => {
         console.log('error tracked in the interceptor', error.response)
         if (error.response.status === 401 || error.response.status === 403) {
-          await logOut()
+          await loggedOut()
           navigate('/login')
         }
         return Promise.reject(error)
       }
     )
-  }, [logOut, navigate])
+  }, [loggedOut, navigate])
 
   return axiosSecure
 }

@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
@@ -11,11 +11,13 @@ import bgImg from '../../assets/images/login.png';
 import Loader from '../../components/shared/Loader';
 import useAuth from "../../hooks/useAuth";
 import logo from '/logo_mediHouse.png';
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const Login = () => {
 
     const { signInUser, user } = useAuth();
+    const axiosSecure = useAxiosSecure();
 
     // custom loader for login
     const [customLoader, setCustomLoader] = useState(false);
@@ -44,15 +46,15 @@ const Login = () => {
                 setCustomLoader(true);
                 // console.log(result.user)
                 const loggedUser = { email };
-                axios.post(`${import.meta.env.VITE_SERVER}/jwt`, loggedUser, { withCredentials: true })
-                    .then(res => {
-                        console.log(res.data)
-                    })
+                axiosSecure.post(`/jwt`, loggedUser)
+                    // .then(res => {
+                    //     console.log(res.data)
+                    // })
                 toast.success("Logged in successful!🎉", { autoClose: 2000, theme: "colored" })
 
                 if (result.user) {
                     setCustomLoader(false);
-                    navigate(whereTo, { replace: true });
+                    navigate('/dashboard', { replace: true });
                 }
 
             })
