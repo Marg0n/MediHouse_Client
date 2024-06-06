@@ -126,7 +126,7 @@ const DashboardNav = () => {
                         <ul>
                             <li>
                                 <NavLink
-                                    to='/dashboard'
+                                    to='/dashboard/profile'
                                     className="flex items-center px-4 py-2  mt-5 transition-colors duration-300 transform rounded-lg  hover:bg-primary hover:text-base-300">
                                     <MdSpaceDashboard size={22} />
 

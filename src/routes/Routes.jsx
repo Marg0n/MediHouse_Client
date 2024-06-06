@@ -9,6 +9,16 @@ import Home from './../pages/Home';
 import Dashboard from "../layouts/Dashboard";
 import PrivateRoute from "./PrivateRoute";
 
+import Statistics from './../pages/dashboard/Statistics';
+import AllBanners from './../pages/dashboard/AllBanners';
+import AddBanner from './../pages/dashboard/AddBanner';
+import AllTests from './../pages/dashboard/AllTests';
+import AddTest from './../pages/dashboard/AddTest';
+import AllUsers from "../pages/dashboard/AllUsers";
+import TestResult from './../pages/dashboard/TestResult';
+import UpcomingAppointment from './../pages/dashboard/UpcomingAppointment';
+import Profile from './../pages/dashboard/Profile';
+
 
 export const router = createBrowserRouter([
     {
@@ -37,8 +47,40 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                index: true,
-                element: <Dashboard />,
+                index: "/profile",
+                element: <Profile/>,
+            },
+            {
+                index: "/appointments",
+                element: <UpcomingAppointment/>,
+            },
+            {
+                index: "/testResults",
+                element: <TestResult/>,
+            },
+            {
+                index: "/allUsers",
+                element: <AllUsers />,
+            },
+            {
+                index: "/addTest",
+                element: <AddTest/>,
+            },
+            {
+                index: "/allTests",
+                element: <AllTests />,
+            },
+            {
+                index: "/addBanner",
+                element: <AddBanner/>,
+            },
+            {
+                index: "/allBanners",
+                element: <AllBanners/>,
+            },
+            {
+                index: "/statistics",
+                element: <Statistics />,
             },
         ],
     },
