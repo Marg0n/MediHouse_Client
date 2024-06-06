@@ -49,8 +49,14 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                index: true,
+                path: "/dashboard",
                 element: <Profile/>,
+                children: [
+                    {
+                        path: '/dashboard/profileEdit/:email',
+                        elements:  <Profile/>,
+                    },
+                ],
             },
             {
                 path: "appointments",

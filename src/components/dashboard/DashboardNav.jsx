@@ -23,6 +23,7 @@ const DashboardNav = () => {
     // Theme specification
     const [theme, setTheme] = useState(localStorage.getItem('theme') || localStorage.setItem('theme', 'winter'));
 
+    // User data from DB
     const [userData] = useUsersProfile();
 
     const [isActive, setActive] = useState(false);
