@@ -10,7 +10,7 @@ const Root = () => {
             {/* navbar */}
             <Navbar/>
 
-            <div className="container mx-2 md:mx-auto my-6 min-h-[calc(100vh-370px)] ">
+            <div className="container mx-2 md:mx-auto my-6 min-h-[calc(100vh-225px)] ">
                 <Outlet />
             </div>
 
