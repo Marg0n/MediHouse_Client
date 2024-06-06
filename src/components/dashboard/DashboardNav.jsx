@@ -4,8 +4,6 @@ import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css';
 import logo from '/logo_mediHouse.png';
 import useAuth from './../../hooks/useAuth';
-import useAxiosCommon from '../../hooks/useAxiosCommon';
-import { useQuery } from '@tanstack/react-query';
 import { MdSpaceDashboard } from 'react-icons/md';
 import { BsClipboard2DataFill, BsClipboard2PulseFill } from 'react-icons/bs';
 import { FcStatistics } from 'react-icons/fc';
@@ -14,27 +12,22 @@ import { RiTestTubeLine } from 'react-icons/ri';
 import { FaUsers } from 'react-icons/fa';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { RxMoon, RxSun } from 'react-icons/rx';
+import useUsers from "../../hooks/useUsers";
 
 
 const DashboardNav = () => {
 
     const { loggedOut, user } = useAuth();
+
+    // Theme specification
     const [theme, setTheme] = useState(localStorage.getItem('theme') || localStorage.setItem('theme', 'winter'));
 
-    const axiosCommon = useAxiosCommon();
-
-    const { data: userData = [] } = useQuery({
-        queryKey: ['userData', user],
-        queryFn: async () => {
-            const { data } = await axiosCommon(`/users/${user?.email}`)
-            return data
-        }
-    })
+    const [userData] = useUsers();
 
     // const { email, name, bloodGroup, district, upazila, status, isAdmin } = userData
     // console.log(userData[0]?.isAdmin);
 
-    
+
 
     const handleToggle = (e) => {
         if (e.target.checked) {
@@ -151,60 +144,63 @@ const DashboardNav = () => {
                                     <span className="mx-4 font-medium">Test results</span>
                                 </NavLink>
                             </li>
-                            <li>
-                                <NavLink
-                                    to='/dashboard/allUsers'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
-                                    <FaUsers size={22} />
+                            {userData[0]?.isAdmin && <>
+                                <li>
+                                    <NavLink
+                                        to='/dashboard/allUsers'
+                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        <FaUsers size={22} />
 
-                                    <span className="mx-4 font-medium">All Users</span>
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/dashboard/addTest'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
-                                    <RiTestTubeLine size={22} />
+                                        <span className="mx-4 font-medium">All Users</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='/dashboard/addTest'
+                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        <RiTestTubeLine size={22} />
 
-                                    <span className="mx-4 font-medium">Add a Test</span>
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/dashboard/allTests'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
-                                    <GiTestTubes size={22} />
+                                        <span className="mx-4 font-medium">Add a Test</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='/dashboard/allTests'
+                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        <GiTestTubes size={22} />
 
-                                    <span className="mx-4 font-medium">All tests</span>
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/dashboard/addBanner'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
-                                    <GiTatteredBanner size={22} />
+                                        <span className="mx-4 font-medium">All tests</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='/dashboard/addBanner'
+                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        <GiTatteredBanner size={22} />
 
-                                    <span className="mx-4 font-medium">Add Banner</span>
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/dashboard/allBanners'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
-                                    <GiKnightBanner size={22} />
+                                        <span className="mx-4 font-medium">Add Banner</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='/dashboard/allBanners'
+                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        <GiKnightBanner size={22} />
 
-                                    <span className="mx-4 font-medium">All Banners</span>
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/dashboard/statistics'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
-                                    <FcStatistics size={22} />
+                                        <span className="mx-4 font-medium">All Banners</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='/dashboard/statistics'
+                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        <FcStatistics size={22} />
 
-                                    <span className="mx-4 font-medium">Statistics</span>
-                                </NavLink>
-                            </li>
+                                        <span className="mx-4 font-medium">Statistics</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                            }
                         </ul>
                     </nav>
                 </div>

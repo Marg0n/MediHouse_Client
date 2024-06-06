@@ -6,9 +6,8 @@ import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css';
 import logo from '/logo_mediHouse.png';
 import useAuth from './../../hooks/useAuth';
-import useAxiosCommon from '../../hooks/useAxiosCommon';
-import { useQuery } from '@tanstack/react-query';
 import { RxMoon, RxSun } from 'react-icons/rx';
+import useUsers from '../../hooks/useUsers';
 
 
 const Navbar = () => {
@@ -18,18 +17,7 @@ const Navbar = () => {
   // State to track whether the dropdown is open or closed
   const [dropdown, setDropdown] = useState(false);
 
-  const axiosCommon = useAxiosCommon();
-
-  const { data: userData = [] } = useQuery({
-    queryKey: ['userData', user],
-    queryFn: async () => {
-      const { data } = await axiosCommon(`/users/${user?.email}`)
-      return data
-    }
-  })
-
-  // const { email, name, bloodGroup, district, upazila, status, isAdmin } = userData
-  // console.log(userData[0]?.isAdmin);
+  const [userData] = useUsers();
 
   const menuList = <>
     <li><NavLink to='/'>Home</NavLink></li>

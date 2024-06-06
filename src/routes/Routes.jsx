@@ -18,6 +18,8 @@ import AllUsers from "../pages/dashboard/AllUsers";
 import TestResult from './../pages/dashboard/TestResult';
 import UpcomingAppointment from './../pages/dashboard/UpcomingAppointment';
 import Profile from './../pages/dashboard/Profile';
+import AdminRoutes from './AdminRoutes';
+
 
 
 export const router = createBrowserRouter([
@@ -60,27 +62,27 @@ export const router = createBrowserRouter([
             },
             {
                 index: "/allUsers",
-                element: <AllUsers />,
+                element: <AdminRoutes><AllUsers /></AdminRoutes>,
             },
             {
                 index: "/addTest",
-                element: <AddTest/>,
+                element: <AdminRoutes><AddTest/></AdminRoutes>,
             },
             {
                 index: "/allTests",
-                element: <AllTests />,
+                element: <AdminRoutes><AllTests /></AdminRoutes>,
             },
             {
                 index: "/addBanner",
-                element: <AddBanner/>,
+                element: <AdminRoutes><AddBanner/></AdminRoutes>,
             },
             {
                 index: "/allBanners",
-                element: <AllBanners/>,
+                element: <AdminRoutes><AllBanners/></AdminRoutes>,
             },
             {
                 index: "/statistics",
-                element: <Statistics />,
+                element: <AdminRoutes><Statistics /></AdminRoutes>,
             },
         ],
     },
