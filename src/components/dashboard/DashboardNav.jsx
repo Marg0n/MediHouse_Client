@@ -173,7 +173,7 @@ const DashboardNav = () => {
                             </li>
                             <li>
                                 <NavLink
-                                    to='/dashboard/appointments'
+                                    to='appointments'
                                     end
                                     className={({ isActive }) =>
                                         `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
@@ -187,7 +187,7 @@ const DashboardNav = () => {
                             </li>
                             <li>
                                 <NavLink
-                                    to='/dashboard/testResults'
+                                    to='testResults'
                                     end
                                     className={({ isActive }) =>
                                         `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
@@ -202,7 +202,7 @@ const DashboardNav = () => {
                             {userData[0]?.isAdmin && <>
                                 <li>
                                     <NavLink
-                                        to='/dashboard/allUsers'
+                                        to='allUsers'
                                         end
                                         className={({ isActive }) =>
                                             `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
@@ -216,7 +216,7 @@ const DashboardNav = () => {
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='/dashboard/addTest'
+                                        to='addTest'
                                         end
                                         className={({ isActive }) =>
                                             `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
@@ -230,7 +230,7 @@ const DashboardNav = () => {
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='/dashboard/allTests'
+                                        to='allTests'
                                         end
                                         className={({ isActive }) =>
                                             `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
@@ -244,7 +244,7 @@ const DashboardNav = () => {
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='/dashboard/addBanner'
+                                        to='addBanner'
                                         end
                                         className={({ isActive }) =>
                                             `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
@@ -258,7 +258,7 @@ const DashboardNav = () => {
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='/dashboard/allBanners'
+                                        to='allBanners'
                                         end
                                         className={({ isActive }) =>
                                             `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
@@ -272,7 +272,7 @@ const DashboardNav = () => {
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='/dashboard/statistics'
+                                        to='statistics'
                                         end
                                         className={({ isActive }) =>
                                             `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''

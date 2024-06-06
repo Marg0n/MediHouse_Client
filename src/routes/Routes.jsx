@@ -53,35 +53,35 @@ export const router = createBrowserRouter([
                 element: <Profile/>,
             },
             {
-                index: "/appointments",
+                path: "appointments",
                 element: <UpcomingAppointment/>,
             },
             {
-                index: "/testResults",
+                path: "testResults",
                 element: <TestResult/>,
             },
             {
-                index: "/allUsers",
+                path: "allUsers",
                 element: <AdminRoutes><AllUsers /></AdminRoutes>,
             },
             {
-                index: "/addTest",
+                path: "addTest",
                 element: <AdminRoutes><AddTest/></AdminRoutes>,
             },
             {
-                index: "/allTests",
+                path: "allTests",
                 element: <AdminRoutes><AllTests /></AdminRoutes>,
             },
             {
-                index: "/addBanner",
+                path: "addBanner",
                 element: <AdminRoutes><AddBanner/></AdminRoutes>,
             },
             {
-                index: "/allBanners",
+                path: "allBanners",
                 element: <AdminRoutes><AllBanners/></AdminRoutes>,
             },
             {
-                index: "/statistics",
+                path: "statistics",
                 element: <AdminRoutes><Statistics /></AdminRoutes>,
             },
         ],
