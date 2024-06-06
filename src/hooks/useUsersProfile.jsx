@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxiosCommon from "./useAxiosCommon";
 import useAuth from "./useAuth";
+import useAxiosCommon from "./useAxiosCommon";
 
 
-const useUsers = () => {
+const useUsersProfile = () => {
 
     const axiosCommon = useAxiosCommon();
     const { user } = useAuth();
 
-    const { data: userData = [],refetch } = useQuery({
+    const { data: userData = [], refetch } = useQuery({
         queryKey: ['userData', user],
         queryFn: async () => {
             const { data } = await axiosCommon(`/users/${user?.email}`)
@@ -19,4 +19,4 @@ const useUsers = () => {
     return [userData, refetch];
 };
 
-export default useUsers;
+export default useUsersProfile;

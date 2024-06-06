@@ -49,7 +49,7 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                index: "/profile",
+                index: true,
                 element: <Profile/>,
             },
             {

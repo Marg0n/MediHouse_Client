@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
+import { BsClipboard2DataFill, BsClipboard2PulseFill } from 'react-icons/bs';
+import { FaUsers } from 'react-icons/fa';
+import { FcStatistics } from 'react-icons/fc';
+import { GiKnightBanner, GiTatteredBanner, GiTestTubes } from 'react-icons/gi';
+import { IoLogOutOutline } from 'react-icons/io5';
+import { MdSpaceDashboard } from 'react-icons/md';
+import { RiTestTubeLine } from 'react-icons/ri';
+import { RxMoon, RxSun } from 'react-icons/rx';
 import { Link, NavLink } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css';
-import logo from '/logo_mediHouse.png';
+import useUsersProfile from "../../hooks/useUsersProfile";
 import useAuth from './../../hooks/useAuth';
-import { MdSpaceDashboard } from 'react-icons/md';
-import { BsClipboard2DataFill, BsClipboard2PulseFill } from 'react-icons/bs';
-import { FcStatistics } from 'react-icons/fc';
-import { GiKnightBanner, GiTatteredBanner, GiTestTubes } from 'react-icons/gi';
-import { RiTestTubeLine } from 'react-icons/ri';
-import { FaUsers } from 'react-icons/fa';
-import { IoLogOutOutline } from 'react-icons/io5';
-import { RxMoon, RxSun } from 'react-icons/rx';
-import useUsers from "../../hooks/useUsers";
+import logo from '/logo_mediHouse.png';
+import { AiOutlineBars } from "react-icons/ai";
 
 
 const DashboardNav = () => {
@@ -22,7 +23,14 @@ const DashboardNav = () => {
     // Theme specification
     const [theme, setTheme] = useState(localStorage.getItem('theme') || localStorage.setItem('theme', 'winter'));
 
-    const [userData] = useUsers();
+    const [userData] = useUsersProfile();
+
+    const [isActive, setActive] = useState(false);
+
+    // Sidebar Responsive Handler
+    const handleBurgerToggle = () => {
+        setActive(!isActive)
+    }
 
     // const { email, name, bloodGroup, district, upazila, status, isAdmin } = userData
     // console.log(userData[0]?.isAdmin);
@@ -47,60 +55,91 @@ const DashboardNav = () => {
 
     return (
         <>
-            <aside className="flex flex-col w-64 max-h-dvh px-4 py-8 overflow-y-auto bg-base-100 border-r rtl:border-r-0 rtl:border-l">
 
-                <div className=" mx-auto btn btn-ghost">
-                    <Link to="/" className='flex gap-2 items-center'>
-                        <img className='w-auto h-7 rounded'
-                            referrerPolicy='no-referrer' src={logo} alt='' />
-                        <span className='font-bold'>Medi House 🩺</span>
-                    </Link>
+            {/* Small Screen Navbar */}
+            <div className=' flex justify-between md:hidden'>
+                <div>
+                    <div className='block cursor-pointer p-4 font-bold'>
+                        <Link to='/'>
+                            <img
+                                className='w-auto h-7 rounded'
+                                referrerPolicy='no-referrer' src={logo}
+                                alt='logo'
+                            // width='100'
+                            // height='100'
+                            />
+                        </Link>
+                    </div>
                 </div>
 
-                <div className="flex flex-col items-center mt-6 -mx-2">
+                <button
+                    onClick={handleBurgerToggle}
+                    className='btn p-4 btn-ghost'
+                >
+                    <AiOutlineBars className='h-5 w-5' />
+                </button>
+            </div>
 
-                    {/* User Info */}
-                    <div className='mb-4'>
-                        <img
-                            data-tooltip-id="name-tooltips"
-                            data-tooltip-content={`${user?.displayName || user?.email}`}
-                            referrerPolicy="no-referrer"
-                            className="object-cover w-24 h-24 mx-2 rounded-full avatar ring ring-primary ring-offset-base-100 ring-offset-2 "
-                            src={
-                                user?.photoURL ? user?.photoURL
-                                    : "https://i.ibb.co/8dJbHdP/No-Photo-Available.webp"
-                            }
-                            alt="avatar" />
-                        <Tooltip id="name-tooltips" />
+
+            <aside                
+                className={`z-10 md:fixed flex flex-col justify-between px-4 py-2 overflow-x-hidden overflow-y-auto bg-base-100 border-r rtl:border-r-0 rtl:border-l w-64 space-y-6 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
+                    }  md:translate-x-0  transition duration-200 ease-in-out`}
+            >
+
+                <div className="mx-auto">
+                    {/* logo */}
+                    <div className=" mx-auto btn btn-ghost">
+                        <Link to="/" className='flex gap-2 items-center'>
+                            <img className='w-auto h-7 rounded'
+                                referrerPolicy='no-referrer' src={logo} alt='logo' />
+                            <span className='font-bold'>Medi House 🩺</span>
+                        </Link>
                     </div>
 
-                    <h4 className="mx-2 mt-2 font-semibold badge badge-info">
-                        {userData[0]?.isAdmin ? "Admin" : "User"}
-                    </h4>
-                    <h4 className="mx-2 mt-2 font-semibold text-blue-500">
-                        {user?.displayName}
-                    </h4>
-                    <p className="mx-2 mt-1 text-sm font-medium text-error">
-                        {user?.email}
-                    </p>
-                </div>
+                    {/* User Info */}
+                    <div className="flex flex-col items-center mt-6 -mx-2">
 
-                {/* Theme changer */}
-                <div className="flex justify-center items-center mt-6">
-                    <label className="swap swap-rotate">
+                        <div className='mb-4'>
+                            <img
+                                data-tooltip-id="name-tooltips"
+                                data-tooltip-content={`${user?.displayName || user?.email}`}
+                                referrerPolicy="no-referrer"
+                                className="object-cover w-24 h-24 mx-2 rounded-full avatar ring ring-primary ring-offset-base-100 ring-offset-2 "
+                                src={
+                                    user?.photoURL ? user?.photoURL
+                                        : "https://i.ibb.co/8dJbHdP/No-Photo-Available.webp"
+                                }
+                                alt="avatar" />
+                            <Tooltip id="name-tooltips" />
+                        </div>
 
-                        {/* this hidden checkbox controls the state */}
-                        <input
-                            onChange={handleToggle}
-                            type="checkbox"
-                            className="theme-controller"
-                        />
+                        <h4 className="mx-2 mt-2 font-semibold badge badge-info">
+                            {userData[0]?.isAdmin ? "Admin" : "User"}
+                        </h4>
+                        <h4 className="mx-2 mt-2 font-semibold text-blue-500">
+                            {user?.displayName}
+                        </h4>
+                        <p className="mx-2 mt-1 text-sm font-medium text-error">
+                            {user?.email}
+                        </p>
+                    </div>
 
-                        {
-                            theme == "winter" ? <>< RxSun className=" fill-current w-5 h-5" /></>
-                                : <> <RxMoon className=" fill-current w-5 h-5" /></>
-                        }
-                        {/* {
+                    {/* Theme changer */}
+                    <div className="flex justify-center items-center mt-6">
+                        <label className="swap swap-rotate">
+
+                            {/* this hidden checkbox controls the state */}
+                            <input
+                                onChange={handleToggle}
+                                type="checkbox"
+                                className="theme-controller"
+                            />
+
+                            {
+                                theme == "winter" ? <>< RxSun className=" fill-current w-5 h-5" /></>
+                                    : <> <RxMoon className=" fill-current w-5 h-5" /></>
+                            }
+                            {/* {
                             theme == "winter" && <>< RxSun className="swap-off fill-current w-5 h-5" /></>
                         }
                         {
@@ -108,10 +147,11 @@ const DashboardNav = () => {
                         } */}
 
 
-                    </label>
+                        </label>
+                    </div>
                 </div>
 
-                <div className="divider divider-accent my-4" ></div>
+                <div className="divider divider-accent my-2" ></div>
 
                 {/* user option */}
                 <div className="flex flex-col justify-between flex-1">
@@ -119,8 +159,13 @@ const DashboardNav = () => {
                         <ul>
                             <li>
                                 <NavLink
-                                    to='/dashboard/profile'
-                                    className="flex items-center px-4 py-2  mt-5 transition-colors duration-300 transform rounded-lg  hover:bg-primary hover:text-base-300">
+                                    to='/dashboard'
+                                    end
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                        }`
+                                    }
+                                >
                                     <MdSpaceDashboard size={22} />
 
                                     <span className="mx-4 font-medium ">My profile</span>
@@ -129,7 +174,12 @@ const DashboardNav = () => {
                             <li>
                                 <NavLink
                                     to='/dashboard/appointments'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                    end
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                        }`
+                                    }
+                                >
                                     <BsClipboard2DataFill size={22} />
 
                                     <span className="mx-4 font-medium">Upcoming Appointments</span>
@@ -138,7 +188,12 @@ const DashboardNav = () => {
                             <li>
                                 <NavLink
                                     to='/dashboard/testResults'
-                                    className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                    end
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                        }`
+                                    }
+                                >
                                     <BsClipboard2PulseFill size={22} />
 
                                     <span className="mx-4 font-medium">Test results</span>
@@ -148,7 +203,12 @@ const DashboardNav = () => {
                                 <li>
                                     <NavLink
                                         to='/dashboard/allUsers'
-                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        end
+                                        className={({ isActive }) =>
+                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                            }`
+                                        }
+                                    >
                                         <FaUsers size={22} />
 
                                         <span className="mx-4 font-medium">All Users</span>
@@ -157,7 +217,12 @@ const DashboardNav = () => {
                                 <li>
                                     <NavLink
                                         to='/dashboard/addTest'
-                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        end
+                                        className={({ isActive }) =>
+                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                            }`
+                                        }
+                                    >
                                         <RiTestTubeLine size={22} />
 
                                         <span className="mx-4 font-medium">Add a Test</span>
@@ -166,7 +231,12 @@ const DashboardNav = () => {
                                 <li>
                                     <NavLink
                                         to='/dashboard/allTests'
-                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        end
+                                        className={({ isActive }) =>
+                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                            }`
+                                        }
+                                    >
                                         <GiTestTubes size={22} />
 
                                         <span className="mx-4 font-medium">All tests</span>
@@ -175,7 +245,12 @@ const DashboardNav = () => {
                                 <li>
                                     <NavLink
                                         to='/dashboard/addBanner'
-                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        end
+                                        className={({ isActive }) =>
+                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                            }`
+                                        }
+                                    >
                                         <GiTatteredBanner size={22} />
 
                                         <span className="mx-4 font-medium">Add Banner</span>
@@ -184,7 +259,12 @@ const DashboardNav = () => {
                                 <li>
                                     <NavLink
                                         to='/dashboard/allBanners'
-                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        end
+                                        className={({ isActive }) =>
+                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                            }`
+                                        }
+                                    >
                                         <GiKnightBanner size={22} />
 
                                         <span className="mx-4 font-medium">All Banners</span>
@@ -193,7 +273,12 @@ const DashboardNav = () => {
                                 <li>
                                     <NavLink
                                         to='/dashboard/statistics'
-                                        className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300">
+                                        end
+                                        className={({ isActive }) =>
+                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                            }`
+                                        }
+                                    >
                                         <FcStatistics size={22} />
 
                                         <span className="mx-4 font-medium">Statistics</span>
@@ -205,7 +290,7 @@ const DashboardNav = () => {
                     </nav>
                 </div>
 
-                <div className="divider divider-accent my-4" ></div>
+                <div className="divider divider-accent my-2" ></div>
 
                 {/* logout */}
                 <div className="flex items-center justify-between  px-4 py-2 transition-colors duration-300 transform rounded-lg  hover:bg-primary hover:text-base-300">

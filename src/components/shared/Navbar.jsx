@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
 import { GoPerson } from "react-icons/go";
+import { RxMoon, RxSun } from 'react-icons/rx';
 import { Link, NavLink } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css';
-import logo from '/logo_mediHouse.png';
+import useUsersProfile from '../../hooks/useUsersProfile';
 import useAuth from './../../hooks/useAuth';
-import { RxMoon, RxSun } from 'react-icons/rx';
-import useUsers from '../../hooks/useUsers';
+import logo from '/logo_mediHouse.png';
 
 
 const Navbar = () => {
@@ -17,7 +17,7 @@ const Navbar = () => {
   // State to track whether the dropdown is open or closed
   const [dropdown, setDropdown] = useState(false);
 
-  const [userData] = useUsers();
+  const [userData] = useUsersProfile();
 
   const menuList = <>
     <li><NavLink to='/'>Home</NavLink></li>
