@@ -3,6 +3,7 @@ import useUsersProfile from '../../hooks/useUsersProfile';
 import useAuth from './../../hooks/useAuth';
 import { FiEdit } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Profile = () => {
 
@@ -16,6 +17,10 @@ const Profile = () => {
         // style={{backgroundImage: 'url(https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg?auto=compress&cs=tinysrgb&w=600)'}}
         // style={{backgroundImage: 'url()'}}
         >
+            <Helmet>
+                <title>Medi House 🩺 | Profile</title>
+            </Helmet>
+
             <div className=''>
                 <div className="flex flex-col items-center mt-6 -mx-2">
 

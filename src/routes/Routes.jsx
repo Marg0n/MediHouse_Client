@@ -19,6 +19,7 @@ import TestResult from './../pages/dashboard/TestResult';
 import UpcomingAppointment from './../pages/dashboard/UpcomingAppointment';
 import Profile from './../pages/dashboard/Profile';
 import AdminRoutes from './AdminRoutes';
+import EditProfile from "../components/dashboard/profile/EditProfile";
 
 
 
@@ -45,26 +46,24 @@ export const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <PrivateRoute><Dashboard/></PrivateRoute>,
+        element: <PrivateRoute><Dashboard /></PrivateRoute>,
         errorElement: <ErrorPage />,
         children: [
             {
                 path: "/dashboard",
-                element: <Profile/>,
-                children: [
-                    {
-                        path: '/dashboard/profileEdit/:email',
-                        elements:  <Profile/>,
-                    },
-                ],
+                element: <Profile />,
+            },
+            {
+                path: '/dashboard/profileEdit/:email',
+                // elements: <EditProfile />,
             },
             {
                 path: "appointments",
-                element: <UpcomingAppointment/>,
+                element: <UpcomingAppointment />,
             },
             {
                 path: "testResults",
-                element: <TestResult/>,
+                element: <TestResult />,
             },
             {
                 path: "allUsers",
@@ -72,7 +71,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "addTest",
-                element: <AdminRoutes><AddTest/></AdminRoutes>,
+                element: <AdminRoutes><AddTest /></AdminRoutes>,
             },
             {
                 path: "allTests",
@@ -80,11 +79,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "addBanner",
-                element: <AdminRoutes><AddBanner/></AdminRoutes>,
+                element: <AdminRoutes><AddBanner /></AdminRoutes>,
             },
             {
                 path: "allBanners",
-                element: <AdminRoutes><AllBanners/></AdminRoutes>,
+                element: <AdminRoutes><AllBanners /></AdminRoutes>,
             },
             {
                 path: "statistics",

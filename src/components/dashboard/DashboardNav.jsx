@@ -82,7 +82,7 @@ const DashboardNav = () => {
             </div>
 
 
-            <aside                
+            <aside
                 className={`z-10 md:fixed flex flex-col justify-between px-4 py-2 overflow-x-hidden overflow-y-auto bg-base-100 border-r rtl:border-r-0 rtl:border-l w-64 space-y-6 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
                     }  md:translate-x-0  transition duration-200 ease-in-out`}
             >
@@ -294,9 +294,10 @@ const DashboardNav = () => {
                 <div className="divider divider-accent my-2" ></div>
 
                 {/* logout */}
-                <div className="flex items-center justify-between  px-4 py-2 transition-colors duration-300 transform rounded-lg  hover:bg-primary hover:text-base-300">
-                    <button
-                        onClick={loggedOut}
+                <button
+                    onClick={loggedOut}
+                    className="flex items-center justify-between  px-4 py-2 transition-colors duration-300 transform rounded-lg  hover:bg-primary hover:text-base-300">
+                    <div
                         className="flex items-center gap-x-2 ">
                         <img
                             referrerPolicy='no-referrer'
@@ -308,10 +309,9 @@ const DashboardNav = () => {
                             alt="avatar"
                         />
                         <span className="text-sm font-medium ">{user?.displayName}</span>
-                    </button>
-
+                    </div>
                     <IoLogOutOutline size={25} />
-                </div>
+                </button>
             </aside>
         </>
     )
