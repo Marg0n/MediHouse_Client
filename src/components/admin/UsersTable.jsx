@@ -94,9 +94,9 @@ const UsersTable = ({ user, handleChangeRole }) => {
                 <Link to={`users/${email}`} className='btn bg-error text-base-300 hover:bg-blue-500 hover:text-white animate-pulse btn-xs'>View Details</Link>
 
                 <button
-                    onClick={() => handleChangeRole(_id, status)}
-                    data-tooltip-id="role-tooltip"
-                    data-tooltip-content="Change Role"
+                    onClick={() => handleChangeRole(_id, status && (status === 'active' && 'blocked') || (status === 'blocked' && 'active'))}
+                    data-tooltip-id="status-tooltip"
+                    data-tooltip-content="Change Status"
                     className='btn btn-neutral hover:btn-error btn-xs  animate__animated animate__tada animate__infinite hover:animate-none'>
                     {
                         status === 'active' ?
@@ -110,7 +110,7 @@ const UsersTable = ({ user, handleChangeRole }) => {
                             />
                     }
                 </button>
-                <Tooltip id="role-tooltip" />
+                <Tooltip id="status-tooltip" />
 
                 <button
                     onClick={() => handlePDF()}

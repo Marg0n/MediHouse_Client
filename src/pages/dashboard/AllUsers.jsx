@@ -6,19 +6,19 @@ import UsersTable from "../../components/admin/UsersTable";
 import { toast } from "react-toastify";
 import Loader from "../../components/shared/Loader";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
 const AllUsers = () => {
 
     const axiosSecoure = useAxiosSecure()
-    const [customLoading, setCustomLoading] = useState(true);
+    const [customLoading, setCustomLoading] = useState(false);
 
     // Navigation
-    const navigate = useNavigate();
-    const location = useLocation();
-    const whereTo = location?.state || '/AllUsers';
+    // const navigate = useNavigate();
+    // const location = useLocation();
+    // const whereTo = location?.state
 
     const { data: allUsers, isLoading } = useQuery({
         queryKey: ['users'],
@@ -30,35 +30,46 @@ const AllUsers = () => {
 
     // console.table(allUsers);
 
-    const handleChangeRole = (id, status) => {
+    const handleChangeRole = async (id, newStatus) => {
 
-        console.table(id, status)
-        // try {
+        console.table(id, newStatus)
+        try {
 
-        //     axiosSecoure.patch(`/users/${id}`, status)
+            setCustomLoading(true);
 
-        //     if (status?.modifiedCount > 0) {
-        //         Swal.fire({
-        //             title: 'Successfully Updated!',
-        //             text: 'Updated the Personal Information! 🎉',
-        //             icon: 'success',
-        //             confirmButtonText: 'Cool'
-        //         }).then(() => {
-        //             // loader
-        //             setCustomLoading(false)
-        //             navigate(whereTo)
-        //         });
-        //     } else {
-        //         toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
-        //         // loader
-        //         setCustomLoading(false)
-        //         navigate(whereTo)
-        //     }
-        // }catch (err) {
-        //     console.log(err);
-        //     toast.error(err.message);
-        //     setCustomLoading(false)
-        // }
+            const { data } = await axiosSecoure.patch(`/update_user/${id}`, { status: newStatus })
+            console.log(data)
+
+            if (data?.modifiedCount > 0) {
+                Swal.fire({
+                    title: 'Status Successfully Updated!',
+                    text: `Updated the Status Information to ${newStatus}! 🎉`,
+                    icon: 'success',
+                    confirmButtonText: 'Cool'
+                }).then(() => {
+                    // loader
+                    setCustomLoading(false)
+                    // navigate(whereTo)
+                    // Reload the page
+                    window.location.reload();
+                });
+            } else {
+                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
+                // loader
+                setCustomLoading(false)
+                // navigate(whereTo)
+                // Reload the page
+                window.location.reload();
+            }
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message, { autoClose: 2000, theme: "colored" });
+            setCustomLoading(false)
+            // navigate(whereTo)
+            // Reload the page
+            window.location.reload();
+
+        }
     };
 
     // waiting time loader
@@ -72,8 +83,8 @@ const AllUsers = () => {
         return () => clearTimeout(timer);
     }, []);
 
-// customLoading ||
-    if ( isLoading || timeLoading) {
+
+    if (customLoading || isLoading || timeLoading) {
         return <Loader />
     }
 

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import useAuth from './useAuth'
+import { useEffect } from 'react'
 
 // export
  const axiosSecure = axios.create({
@@ -13,7 +14,7 @@ const useAxiosSecure = () => {
   const { loggedOut } = useAuth()
   const navigate = useNavigate()
 
-  // useEffect(() => {
+  useEffect(() => {
 
     // request authorization interceptor to add authorization headers for every secure request to the API
     axiosSecure.interceptors.request.use(
@@ -42,7 +43,7 @@ const useAxiosSecure = () => {
         return Promise.reject(error)
       }
     )
-  // }, [loggedOut, navigate])
+  }, [loggedOut, navigate])
 
   return axiosSecure
 }
