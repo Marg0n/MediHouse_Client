@@ -1,5 +1,4 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAxiosCommon from "../../../hooks/useAxiosCommon";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../../shared/Loader";
@@ -11,12 +10,13 @@ import useUsersProfile from "../../../hooks/useUsersProfile";
 import { TiArrowBack } from "react-icons/ti";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ProfileEdit = () => {
 
     const { user, loading, setLoading } = useAuth();
 
-    const axiosCommon = useAxiosCommon()
+    const axiosSecure = useAxiosSecure()
     // User data from DB
     const [userData, , isLoading] = useUsersProfile();
 
@@ -61,7 +61,7 @@ const ProfileEdit = () => {
             setLoading(true);
 
             // update user data in mongo DB
-            const {data: update } = await axiosCommon.put(`/update/${user?.email}`, userInfo)
+            const {data: update } = await axiosSecure.put(`/update/${user?.email}`, userInfo)
             // console.table(userInfo);
 
             if (update?.modifiedCount > 0) {
