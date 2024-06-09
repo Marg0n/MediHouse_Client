@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
     // loading
     const [loading, setLoading] = useState(true);
     // console.log(loading)
-    console.log("user ase?", user)
+    // console.log("user ase?", user)
 
     // social auth Providers
     const googleProvider = new GoogleAuthProvider();
@@ -88,6 +88,9 @@ const AuthProvider = ({ children }) => {
             { withCredentials: true }
         )
         console.log(data)
+        if(data.token){
+            localStorage.setItem('token', data.token)
+        }
         return data
     }
 
@@ -99,6 +102,8 @@ const AuthProvider = ({ children }) => {
             //token get
             if (currentUser) {
                 getToken(currentUser.email)
+            }else{
+                localStorage.removeItem('token')
             }
             setLoading(false);
         });
