@@ -71,7 +71,6 @@ const Registration = () => {
         const isAdmin = false;
 
         // console.table({ email, password, name, bloodGroup, district, upazila, status, formData });
-        const userInfo = { email, name, bloodGroup, district, upazila, status, isAdmin };
 
         try {
             setLoading(true);
@@ -79,9 +78,11 @@ const Registration = () => {
             // upload image and get image url
             const image_url = await imageUpload(image);
 
+            const userInfo = { email, name, bloodGroup, district, upazila, status, isAdmin, image_url };
+
             // insert user data in mongo DB
             await axiosCommon.post('/users', userInfo)
-            console.table(userInfo);
+            // console.table(userInfo);
 
 
             if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[`!@#$%^&*()[\]{}|\\;:'",.<>/?~])(?=.{6,})/.test(password)) {

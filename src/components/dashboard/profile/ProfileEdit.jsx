@@ -10,13 +10,13 @@ import useUsersProfile from "../../../hooks/useUsersProfile";
 import { TiArrowBack } from "react-icons/ti";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosCommon from "../../../hooks/useAxiosCommon";
 
 const ProfileEdit = () => {
 
     const { user, loading, setLoading } = useAuth();
 
-    const axiosSecure = useAxiosSecure()
+    const axiosCommon = useAxiosCommon()
     // User data from DB
     const [userData, , isLoading] = useUsersProfile();
 
@@ -61,7 +61,7 @@ const ProfileEdit = () => {
             setLoading(true);
 
             // update user data in mongo DB
-            const {data: update } = await axiosSecure.put(`/update/${user?.email}`, userInfo)
+            const {data: update } = await axiosCommon.put(`/update/${user?.email}`, userInfo)
             // console.table(userInfo);
 
             if (update?.modifiedCount > 0) {

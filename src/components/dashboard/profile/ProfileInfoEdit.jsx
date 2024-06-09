@@ -7,10 +7,13 @@ import { useForm } from "react-hook-form";
 import { TiArrowBack } from "react-icons/ti";
 import { imageUpload } from "../../../utils/imageUpload";
 import { useEffect, useState } from "react";
+import useAxiosCommon from "../../../hooks/useAxiosCommon";
+import Swal from "sweetalert2";
 
 const ProfileInfoEdit = () => {
 
     const { user, loading, setLoading, updateUserProfile } = useAuth();
+    const axiosCommon = useAxiosCommon()
 
     // custom loader for update
     const [customLoader, setCustomLoader] = useState(false);
@@ -45,12 +48,32 @@ const ProfileInfoEdit = () => {
             const image_url = await imageUpload(image);
             // console.log(image_url)
 
+            const userInfo = { name, image_url };
+
+            // update user data in mongo DB
+            const { data: update } = await axiosCommon.put(`/update/${user?.email}`, userInfo)
+
 
             // Add or update other data except email and pass
             updateUserProfile(name, image_url)
                 .then(() => {
 
                     setCustomLoader(true)
+
+                    // mongoDB updates
+                    if (update?.modifiedCount > 0) {
+                        Swal.fire({
+                            title: 'Successfully Updated!',
+                            text: 'Updated the Profile Information! 🎉',
+                            icon: 'success',
+                            confirmButtonText: 'Cool'
+                        })
+                    } else {
+                        toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
+                        // loader
+                        setLoading(false)
+                        navigate(whereTo)
+                    }
 
                     // Profile updated!
                     toast.success("Profile Update successful!🎉", { autoClose: 3000, theme: "colored" })
@@ -77,7 +100,7 @@ const ProfileInfoEdit = () => {
         catch (err) {
             console.log(err);
             toast.error(err.message);
-            setLoading(false)            
+            setLoading(false)
             setCustomLoader(false)
         }
 

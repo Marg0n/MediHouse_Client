@@ -21,6 +21,7 @@ import Profile from './../pages/dashboard/Profile';
 import AdminRoutes from './AdminRoutes';
 import ProfileEdit from "../components/dashboard/profile/ProfileEdit";
 import ProfileInfoEdit from "../components/dashboard/profile/ProfileInfoEdit";
+import ViewDetails from "../components/admin/ViewDetails";
 
 
 
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
             {
                 path: "allUsers",
                 element: <AdminRoutes><AllUsers /></AdminRoutes>,
+            },
+            {
+                path: "allUsers/users/:email",
+                element: <AdminRoutes><ViewDetails /></AdminRoutes>,
             },
             {
                 path: "addTest",

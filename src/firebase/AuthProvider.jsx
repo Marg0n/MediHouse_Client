@@ -87,7 +87,7 @@ const AuthProvider = ({ children }) => {
             { email },
             { withCredentials: true }
         )
-        console.log(data)
+        // console.log(data)
         if(data.token){
             localStorage.setItem('token', data.token)
         }
