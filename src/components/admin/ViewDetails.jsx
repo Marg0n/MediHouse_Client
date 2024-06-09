@@ -1,16 +1,20 @@
-import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
-import Loader from "../shared/Loader";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosCommon from "../../hooks/useAxiosCommon";
+import { Helmet } from "react-helmet-async";
+import { TiArrowBack } from "react-icons/ti";
+import { useNavigate, useParams } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
+import Loader from "../shared/Loader";
 
 
 const ViewDetails = () => {
 
-    const {email} = useParams()
+    const { email } = useParams()
     const axiosCommon = useAxiosCommon()
-   
+
+    // Navigation
+    const navigate = useNavigate();
+
 
     const { data: singleUser = [], isLoading } = useQuery({
         queryKey: ['singleUser', email],
@@ -20,19 +24,25 @@ const ViewDetails = () => {
         }
     })
 
-    console.log(singleUser)
+    // console.log(singleUser)
 
     if (isLoading) {
-        <Loader/>
+        <Loader />
     }
 
     return (
         <div
-            className='flex flex-col gap-7 justify-center items-center min-h-[calc(100vh-50px)] w-11/12 mx-auto rounded-lg glass shadow-2xl text-primary bg-cover bg-no-repeat bg-center '
+            className='flex flex-col gap-7 justify-center items-center min-h-[calc(100vh-50px)] w-11/12 mx-auto rounded-lg glass shadow-2xl text-primary bg-cover bg-no-repeat bg-center relative'
         >
             <Helmet>
                 <title>Medi House 🩺 | Profile of {`${singleUser?.name}`}</title>
             </Helmet>
+
+            <button onClick={() => navigate(-1)}>
+                <button className="absolute left-4 top-4 btn btn-outline btn-primary">
+                    <TiArrowBack size={20} />
+                </button>
+            </button>
 
             {/* display pic, name and mail */}
             <div className=''>
@@ -81,7 +91,7 @@ const ViewDetails = () => {
                 </div>
 
             </div>
-            
+
         </div>
     );
 };
