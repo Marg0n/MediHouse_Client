@@ -32,3 +32,4 @@ Resources:
 - [React Tooltip](https://react-tooltip.com)
 - [Meraki UI - Components](https://merakiui.com/components)
 - [framer-motion](https://www.framer.com/motion/)
+- [jspdf](https://www.npmjs.com/package/jspdf)
