@@ -15,6 +15,21 @@ const useAxiosSecure = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+
+    // request authorization interceptor to add authorization headers for every secure request to the API
+    axiosSecure.interceptors.request.use(
+      async req => {
+        const token = await localStorage?.getItem('token')
+        req.headers.authorization = `Bearer ${token}`
+        return req
+      },
+      async error => {
+        // Do something here with the error
+        return Promise.reject(error)
+      }
+    )
+
+    // Intercepts 401 & 403 status to the API
     axiosSecure.interceptors.response.use(
       res => {
         return res
