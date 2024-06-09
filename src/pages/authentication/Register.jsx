@@ -13,6 +13,7 @@ import logo from '/logo_mediHouse.png';
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import useAxiosCommon from './../../hooks/useAxiosCommon';
+import { imageUpload } from "../../utils/imageUpload";
 
 
 const Registration = () => {
@@ -65,9 +66,6 @@ const Registration = () => {
         const { email, password, name, bloodGroup, district, upazila } = data;
 
         const image = e.target.avatar.files[0]
-        const formData = new FormData();
-        formData.append('image', image)
-        // console.log(formData);
 
         const status = 'active';
         const isAdmin = false;
@@ -77,11 +75,9 @@ const Registration = () => {
 
         try {
             setLoading(true);
+
             // upload image and get image url
-            const { data: pic } = await axios.post(
-                `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
-                formData
-            )
+            const image_url = await imageUpload(image);
 
             // insert user data in mongo DB
             await axiosCommon.post('/users', userInfo)
@@ -105,7 +101,7 @@ const Registration = () => {
             createUser(email, password)
                 .then(() => {
                     // Add or update other data except email and pass
-                    updateUserProfile(name, pic.data.display_url)
+                    updateUserProfile(name, image_url)
                         .then(async () => {
 
                             setCustomLoader(true)

@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
     // loading
     const [loading, setLoading] = useState(true);
     // console.log(loading)
-    // console.log("user ase?", user)
+    console.log("user ase?", user)
 
     // social auth Providers
     const googleProvider = new GoogleAuthProvider();
@@ -83,7 +83,7 @@ const AuthProvider = ({ children }) => {
     // Get token from server
     const getToken = async email => {
         const { data } = await axios.post(
-            `${import.meta.env.VITE_API_URL}/jwt`,
+            `${import.meta.env.VITE_SERVER}/jwt`,
             { email },
             { withCredentials: true }
         )

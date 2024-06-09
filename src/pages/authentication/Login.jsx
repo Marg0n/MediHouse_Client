@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { RxEyeClosed } from "react-icons/rx";
@@ -104,8 +104,19 @@ const Login = () => {
     //         })
     // }
 
+    // sitting time loader
+    const [timeLoading, setTimeLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTimeLoading(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     // Custom loader
-    if (customLoader) {
+    if (customLoader || timeLoading) {
         return <Loader />;
     }
 

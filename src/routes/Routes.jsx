@@ -19,7 +19,8 @@ import TestResult from './../pages/dashboard/TestResult';
 import UpcomingAppointment from './../pages/dashboard/UpcomingAppointment';
 import Profile from './../pages/dashboard/Profile';
 import AdminRoutes from './AdminRoutes';
-import EditProfile from "../components/dashboard/profile/EditProfile";
+import ProfileEdit from "../components/dashboard/profile/ProfileEdit";
+import ProfileInfoEdit from "../components/dashboard/profile/ProfileInfoEdit";
 
 
 
@@ -52,10 +53,15 @@ export const router = createBrowserRouter([
             {
                 path: "/dashboard",
                 element: <Profile />,
+
             },
             {
-                path: '/dashboard/profileEdit/:email',
-                // elements: <EditProfile />,
+                path: "profileEdit/:email",
+                element: <ProfileEdit />,
+            },
+            {
+                path: "profileEdit",
+                element: <ProfileInfoEdit />,
             },
             {
                 path: "appointments",

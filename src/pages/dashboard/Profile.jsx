@@ -4,6 +4,7 @@ import useAuth from './../../hooks/useAuth';
 import { FiEdit } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+// import logo from '/logo_mediHouse.png';
 
 const Profile = () => {
 
@@ -11,16 +12,18 @@ const Profile = () => {
     // User data from DB
     const [userData] = useUsersProfile();
 
+
     return (
         <div
-            className='flex flex-col gap-7 justify-center items-center min-h-[calc(100vh-50px)] w-11/12 mx-auto rounded-lg glass shadow-2xl text-primary'
+            className='flex flex-col gap-7 justify-center items-center min-h-[calc(100vh-50px)] w-11/12 mx-auto rounded-lg glass shadow-2xl text-primary bg-cover bg-no-repeat bg-center '
         // style={{backgroundImage: 'url(https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg?auto=compress&cs=tinysrgb&w=600)'}}
-        // style={{backgroundImage: 'url()'}}
+        // style={{backgroundImage: `url(${stethoscope})`}}
         >
             <Helmet>
                 <title>Medi House 🩺 | Profile</title>
             </Helmet>
 
+            {/* display pic, name and mail */}
             <div className=''>
                 <div className="flex flex-col items-center mt-6 -mx-2">
 
@@ -55,27 +58,31 @@ const Profile = () => {
             <div className='flex w-full items-center justify-center gap-16 '>
 
                 <div>
-                    <p className='text-base font-serif font-semibold'>Name :</p>
-                    <p className='text-base font-serif font-semibold'>Email :</p>
                     <p className='text-base font-serif font-semibold'>Blood Group :</p>
                     <p className='text-base font-serif font-semibold'>District :</p>
                     <p className='text-base font-serif font-semibold'>Upazila :</p>
                 </div>
 
                 <div>
-                    <p>{user?.displayName}</p>
-                    <p>{user?.email}</p>
                     <p>{userData[0]?.bloodGroup}</p>
                     <p>{userData[0]?.district}</p>
                     <p>{userData[0]?.upazila}</p>
                 </div>
 
             </div>
-            <Link
-                to={`/dashboard/profileEdit/${user?.email}`}
-                className='flex gap-4 justify-center items-center btn btn-warning animate-pulse hover:animate-none'>
-                Edit   <FiEdit />
-            </Link>
+
+            <div className='flex gap-4'>
+                <Link
+                    to={`profileEdit`}
+                    className='flex gap-4 justify-center items-center btn btn-warning animate-pulse hover:animate-none hover:btn-primary'>
+                    Edit Profile  <FiEdit />
+                </Link>
+                <Link
+                    to={`profileEdit/${user?.email}`}
+                    className='flex gap-4 justify-center items-center btn btn-warning animate-pulse hover:animate-none hover:btn-primary'>
+                    Edit Personal Info  <FiEdit />
+                </Link>
+            </div>
         </div>
     );
 };
