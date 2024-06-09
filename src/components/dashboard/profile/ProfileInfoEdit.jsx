@@ -1,21 +1,16 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import useAxiosCommon from "../../../hooks/useAxiosCommon";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
 import Loader from "../../shared/Loader";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import useUsersProfile from "../../../hooks/useUsersProfile";
 import { TiArrowBack } from "react-icons/ti";
 import { imageUpload } from "../../../utils/imageUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProfileInfoEdit = () => {
 
     const { user, loading, setLoading, updateUserProfile } = useAuth();
-    const profilePhoto = user?.photoURL;
 
     // custom loader for update
     const [customLoader, setCustomLoader] = useState(false);
@@ -23,15 +18,11 @@ const ProfileInfoEdit = () => {
     // preview image
     const [imagePreview, setImagePreview] = useState(null);
 
-    const { email } = useParams();
-    const axiosCommon = useAxiosCommon()
-    // User data from DB
-    const [userData, , isLoading] = useUsersProfile();
 
     // Navigation
     const navigate = useNavigate();
     const location = useLocation();
-    const whereTo = location?.state || '/';
+    const whereTo = location?.state || '/dashboard';
 
     // react form
     const {
@@ -42,87 +33,69 @@ const ProfileInfoEdit = () => {
 
 
     // Submit button for updating
-    const onSubmit = async (e) => {
+    const onSubmit = async (data, e) => {
 
+        const { name } = data;
         const image = e.target.avatar.files[0]
-        // upload image and get image url        
-        const image_url = await imageUpload(image);
-        console.log(image_url)
 
-        // try {
-        //     setLoading(true);
+        try {
+            setLoading(true);
 
-        //     // upload image and get image url        
-        //     const image_url = await imageUpload(image);
-        //     // console.log(image_url)
+            // upload image and get image url        
+            const image_url = await imageUpload(image);
+            // console.log(image_url)
 
-        //     // update user data in mongo DB
-        //     await axiosCommon.put(`/update/${user?.email}`, userInfo)
-        //     console.table(userInfo);
 
-        //     // Add or update other data except email and pass
-        //     updateUserProfile(name, image_url)
-        //         .then(async () => {
+            // Add or update other data except email and pass
+            updateUserProfile(name, image_url)
+                .then(() => {
 
-        //             setCustomLoader(true)
+                    setCustomLoader(true)
 
-        //             // Profile updated!
-        //             toast.success("Registration successful!🎉", { autoClose: 3000, theme: "colored" })
-        //             toast.info("Try to Login! 😁", { autoClose: 5000, theme: "colored" })
+                    // Profile updated!
+                    toast.success("Profile Update successful!🎉", { autoClose: 3000, theme: "colored" })
 
-        //             // loader
-        //             setCustomLoader(false)
-        //             loggedOut();
-        //             navigate('/login')
+                    // loader
+                    setLoading(false)
+                    setCustomLoader(false)
+                    navigate(whereTo)
 
-        //         }).catch((errors) => {
+                }).catch((errors) => {
 
-        //             setCustomLoader(false)
-        //             setLoading(false)
-        //             // An error occurred
-        //             const errorMessage = errors.message.split(':')[1].split('(')[0].trim();
+                    setCustomLoader(false)
+                    setLoading(false)
+                    // An error occurred
+                    const errorMessage = errors.message.split(':')[1].split('(')[0].trim();
 
-        //             toast.error(errorMessage, { autoClose: 3000, theme: "colored" });
-        //             navigate('/registration');
-        //         });
+                    toast.error(errorMessage, { autoClose: 3000, theme: "colored" });
+                    navigate('/registration');
+                });
 
-        //     // console.log(result)
+            // console.log(result)
 
-        // }
-        // catch (err) {
-        //     console.log(err);
-        //     toast.error(err.message);
-        //     setLoading(false)
-        // }
+        }
+        catch (err) {
+            console.log(err);
+            toast.error(err.message);
+            setLoading(false)            
+            setCustomLoader(false)
+        }
 
     }
 
+    // waiting time loader
+    const [timeLoading, setTimeLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTimeLoading(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
 
-    //     try {
-    //         const {data} = await axios.put(`${import.meta.env.VITE_SERVER}/update/${email}`, updateBlog)
-    //                 if (data?.modifiedCount > 0) {
-    //                     Swal.fire({
-    //                         title: 'Successfully Updated!',
-    //                         text: 'Updated the Blog! 🎉',
-    //                         icon: 'success',
-    //                         confirmButtonText: 'Cool'
-    //                     }).then(() => {
-    //                         navigate('/myBlogs'); // navigate
-    //                     });
-    //                 }else {
-    //                     toast.warning('Something went Wrong!',{ autoClose: 2000, theme: "colored" })
-    //                 }
-    //     }
-    //     catch (err) {
-    //         toast.error(err.message,{ autoClose: 2000, theme: "colored" })
-    //     }
-
-    // }
-
-
-
-    if (loading || isLoading || customLoader) {
+    if (loading || customLoader || timeLoading) {
         return <Loader />
     }
 
@@ -183,17 +156,17 @@ const ProfileInfoEdit = () => {
                                             <img src={imagePreview} alt='Selected Avatar' className='w-16 h-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2' />
                                         </div>
                                     )
-                                    : (
-                                        <div className='mb-4'>
-                                            <img src={user?.photoURL} alt='Current Avatar' className='w-16 h-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2' />
-                                        </div>
-                                    )
+                                        : (
+                                            <div className='mb-4'>
+                                                <img src={user?.photoURL} alt='Current Avatar' className='w-16 h-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2' />
+                                            </div>
+                                        )
                                 }
                             </div>
 
                             <input
                                 // required
-                                onChangeCapture={e=>setImagePreview(URL.createObjectURL(e.target.files[0]))}
+                                onChangeCapture={e => setImagePreview(URL.createObjectURL(e.target.files[0]))}
                                 className=' block w-full px-4 py-2 rounded-lg input  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300 file-input-success border-none'
                                 type='file'
                                 id='avatar'

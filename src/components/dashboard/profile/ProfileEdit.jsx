@@ -10,6 +10,7 @@ import axios from "axios";
 import useUsersProfile from "../../../hooks/useUsersProfile";
 import { TiArrowBack } from "react-icons/ti";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
 const ProfileEdit = () => {
 
@@ -66,7 +67,7 @@ const ProfileEdit = () => {
             if (update?.modifiedCount > 0) {
                 Swal.fire({
                     title: 'Successfully Updated!',
-                    text: 'Updated the Blog! 🎉',
+                    text: 'Updated the Personal Information! 🎉',
                     icon: 'success',
                     confirmButtonText: 'Cool'
                 }).then(() => {
@@ -89,8 +90,19 @@ const ProfileEdit = () => {
 
     }
 
+    // waiting time loader
+    const [timeLoading, setTimeLoading] = useState(true);
 
-    if (loading || isLoading) {
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTimeLoading(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+
+    if (loading || isLoading || timeLoading) {
         return <Loader />
     }
 
@@ -98,7 +110,7 @@ const ProfileEdit = () => {
         <div className='flex flex-col justify-center items-center min-h-[calc(100vh-50px)] w-11/12 mx-auto rounded-lg glass shadow-2xl text-primary bg-cover bg-no-repeat bg-center relative'>
 
             <Helmet>
-                <title>Medi House 🩺 | Update Profile</title>
+                <title>Medi House 🩺 | Update Personal Info</title>
             </Helmet>
 
             <h3 className='mt-3 text-2xl text-center underline underline-offset-8 '>
