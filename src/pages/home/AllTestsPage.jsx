@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Loader from "../../components/shared/Loader";
 import useTestsLists from "../../hooks/useTestsLists";
 
@@ -8,6 +9,7 @@ const AllTestsPage = () => {
     const { testsLists, testsLoading } = useTestsLists();
 
     // console.log(testsLists)
+
 
     if (testsLoading) {
         <Loader />
@@ -27,7 +29,9 @@ const AllTestsPage = () => {
                             <h2 className="card-title">{test.test_name}</h2>
                             <p className="text-justify">{test.details}</p>
                             <div className="card-actions justify-end">
-                                <button className="btn btn-primary animate-pulse hover:animate-none">Details</button>
+                                <Link 
+                                to={`/testDetails/${test._id}`}
+                                className="btn btn-primary animate-pulse hover:animate-none">Details</Link>
                             </div>
                         </div>
                     </div>

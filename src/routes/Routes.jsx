@@ -23,6 +23,7 @@ import ProfileEdit from "../components/dashboard/profile/ProfileEdit";
 import ProfileInfoEdit from "../components/dashboard/profile/ProfileInfoEdit";
 import ViewDetails from "../components/admin/ViewDetails";
 import AllTestsPage from "../pages/home/AllTestsPage";
+import TestsDetails from "../pages/home/TestsDetails";
 
 
 
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
             {
                 path: "/allTestPage",
                 element: <AllTestsPage />,
+            },
+            {
+                path: "/testDetails/:id",
+                element: <PrivateRoute><TestsDetails /></PrivateRoute>,
             },
         ],
     },

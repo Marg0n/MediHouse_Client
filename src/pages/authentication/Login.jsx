@@ -28,7 +28,7 @@ const Login = () => {
     // Navigation
     const navigate = useNavigate();
     const location = useLocation();
-    const whereTo = location?.state || '/';
+    const whereTo = location?.state || '/dashboard';
 
     // React hook form
     const {
@@ -54,7 +54,7 @@ const Login = () => {
 
                 if (result.user) {
                     setCustomLoader(false);
-                    navigate('/dashboard', { replace: true });
+                    navigate(whereTo, { replace: true });
                 }
 
             })
