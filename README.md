@@ -33,3 +33,4 @@ Resources:
 - [Meraki UI - Components](https://merakiui.com/components)
 - [framer-motion](https://www.framer.com/motion/)
 - [jspdf](https://www.npmjs.com/package/jspdf)
+- [Moment.js](https://momentjs.com)
