@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { imageUpload } from "../../utils/imageUpload";
 import Loader from "../../components/shared/Loader";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import moment from "moment";
 import Swal from "sweetalert2";
 
 
@@ -31,8 +30,8 @@ const AddTest = () => {
 
         const form = e.target;
 
-        const { test_name, details, price, date, slots } = data;
-        const test_date = moment(date).format("MMM Do YYYY")
+        const { test_name, details, price, date: test_date, slots } = data;
+        // const test_date = moment(date).format("MMM Do YYYY")
         // const testTime = moment(slots, "HH:mm").format('hh:mm A'); // Format time in 12-hour format with AM/PM
         // console.log(testDate, slots,testTime)
         const test_price = parseInt(price)
