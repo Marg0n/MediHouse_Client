@@ -22,6 +22,7 @@ import AdminRoutes from './AdminRoutes';
 import ProfileEdit from "../components/dashboard/profile/ProfileEdit";
 import ProfileInfoEdit from "../components/dashboard/profile/ProfileInfoEdit";
 import ViewDetails from "../components/admin/ViewDetails";
+import AllTestsPage from "../pages/home/AllTestsPage";
 
 
 
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
             {
                 path: "/registration",
                 element: <Register />,
+            },
+            {
+                path: "/allTestPage",
+                element: <AllTestsPage />,
             },
         ],
     },

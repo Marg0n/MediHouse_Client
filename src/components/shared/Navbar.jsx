@@ -20,16 +20,37 @@ const Navbar = () => {
   const [userData] = useUsersProfile();
 
   const menuList = <>
-    <li><NavLink to='/'>Home</NavLink></li>
-    <li><NavLink to='/about'>About</NavLink></li>
+    <li><NavLink to='/'
+      end
+      className={({ isActive }) =>
+        ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+        }`}>Home</NavLink></li>
+    <li><NavLink to='/allTestPage'
+      end
+      className={({ isActive }) =>
+        ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+        }`}>All Tests</NavLink></li>
+    <li><NavLink to='/about'
+      end
+      className={({ isActive }) =>
+        ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+        }`}>About</NavLink></li>
     {
       user && <>
-        <li><NavLink to='/dashboard'>Dashboard</NavLink></li>
+        <li><NavLink to='/dashboard'
+          end
+          className={({ isActive }) =>
+            ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+            }`}>Dashboard</NavLink></li>
       </>
     }
     {
       !user && <>
-        <li><NavLink to='/registration'>Register</NavLink></li>
+        <li><NavLink to='/registration'
+          end
+          className={({ isActive }) =>
+            ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+            }`}>Register</NavLink></li>
       </>
     }
   </>
@@ -39,13 +60,13 @@ const Navbar = () => {
       <div className='justify-between'>Add Job</div>
     </li> */}
     <li>
-      <Link to='/addBlog'>Add Blog</Link>
+      <Link to='/dashboard'>Profile</Link>
     </li>
     <li>
-      <Link to='/myBlogs'>My Blogs</Link>
+      <Link to='/dashboard/appointments'>Upcoming Appointment</Link>
     </li>
     <li>
-      <Link to='/wishlist'>Wishlist</Link>
+      <Link to='/dashboard/testResults'>Test Result</Link>
     </li>
     <li
       className="rounded-xl p-2 m-2 text-right"
