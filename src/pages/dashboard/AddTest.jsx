@@ -3,10 +3,10 @@ import { AttentionSeeker } from "react-awesome-reveal";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { imageUpload } from "../../utils/imageUpload";
+import Swal from "sweetalert2";
 import Loader from "../../components/shared/Loader";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import Swal from "sweetalert2";
+import { imageUpload } from "../../utils/imageUpload";
 
 
 const AddTest = () => {
@@ -17,6 +17,18 @@ const AddTest = () => {
     const [imagePreview, setImagePreview] = useState(null);
 
     const axiosSecure = useAxiosSecure();
+
+    // Date format
+    // const [today, setToday] = useState('');
+
+    // useEffect(() => {
+    //     const date = new Date();
+    //     const year = date.getFullYear();
+    //     const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero indexed so we add one
+    //     const day = ('0' + date.getDate()).slice(-2); // Pad single digit day values
+    //     const currentDate = `${year}-${month}-${day}`;
+    //     setToday(currentDate);
+    // }, []);
 
     // react form
     const {
@@ -66,9 +78,9 @@ const AddTest = () => {
                     // navigate(whereTo)
                 });
             } else {
-                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" }) 
+                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
                 // loader
-                setCustomLoader(false)               
+                setCustomLoader(false)
                 // navigate(whereTo)
             }
         }
@@ -215,6 +227,7 @@ const AddTest = () => {
                             id='date'
                             autoComplete='date'
                             name='date'
+                            // value={today}
                             className='block w-full px-4 py-2  border rounded-lg input input-bordered focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                             type='date'
                             {...register("date", { required: true })}
