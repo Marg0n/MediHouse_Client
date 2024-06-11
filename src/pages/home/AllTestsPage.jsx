@@ -78,6 +78,7 @@ const AllTestsPage = () => {
         register,
         handleSubmit,
         // formState: { errors },
+        reset,
     } = useForm()
 
     const onSubmit = async (data) => {
@@ -99,8 +100,9 @@ const AllTestsPage = () => {
         setSearchTerm('')
         setCurrentPage(1);
         refetch();
+        reset(); // Reset the form fields
         // Reload the page to clear the filters
-        window.location.reload();
+        // window.location.reload();
     }
 
     refetch();
