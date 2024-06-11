@@ -35,7 +35,7 @@ const TestsDetails = () => {
     const userMail = user?.email
     const reportStatus = 'pending'
 
-    const booking = { testID, imageURL, testName, testsDescription, testPrice, testSlots, appointmentsDate, userMail, reportStatus }
+    const booking = { testID, imageURL, testName, testsDescription, testPrice, appointmentsDate, userMail, reportStatus }
 
 
     const handleBookNow = async() => {

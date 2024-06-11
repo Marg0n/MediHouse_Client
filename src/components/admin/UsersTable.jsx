@@ -6,8 +6,9 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { FaDownload } from 'react-icons/fa';
 import { CgBlock, CgUnblock } from 'react-icons/cg';
 import { jsPDF } from "jspdf";
+import { MdOutlineChangeCircle } from 'react-icons/md';
 
-const UsersTable = ({ user, handleChangeRole }) => {
+const UsersTable = ({ user, handleChangeRole, handleChangeAdminRole }) => {
 
 
     const { _id, email, name, bloodGroup, district, upazila, status, isAdmin, image_url } = user;
@@ -88,7 +89,26 @@ const UsersTable = ({ user, handleChangeRole }) => {
             <td>{district}</td>
             <td>{upazila}</td>
             <td>{status}</td>
-            <td>{isAdmin ? "Admin" : 'User'}</td>
+            <td>
+                <div className='flex flex-col gap-2 justify-center items-center'>
+
+                    {isAdmin ? "Admin" : 'User'}
+                    <br />
+                    <button
+                        onClick={() => handleChangeAdminRole(_id, isAdmin ? "User" : 'Admin')}
+                        data-tooltip-id="updateAdmin-tooltip"
+                        data-tooltip-content="updateAdmin"
+                        className='btn btn-neutral hover:btn-info btn-xs btn-circle animate__infinite hover:animate-none animate-spin'
+                    >
+                        <MdOutlineChangeCircle
+                            size={20}
+                            className='text-primary group-hover:text-secondary'
+                        />
+                    </button>
+                    <Tooltip id="updateAdmin-tooltip" />
+
+                </div>
+            </td>
             <td className='flex flex-col items-center gap-4 justify-center'>
 
                 <Link to={`users/${email}`} className='btn bg-error text-base-300 hover:bg-blue-500 hover:text-white animate-pulse btn-xs'>View Details</Link>
@@ -132,6 +152,7 @@ const UsersTable = ({ user, handleChangeRole }) => {
 UsersTable.propTypes = {
     user: PropTypes.object,
     handleChangeRole: PropTypes.func,
+    handleChangeAdminRole: PropTypes.func,
 }
 
 export default UsersTable;

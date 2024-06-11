@@ -11,9 +11,6 @@ import { useForm } from "react-hook-form";
 
 const AllTestsPage = () => {
 
-    // tests data source from DB
-    // const { testsLists, testsLoading } = useTestsLists();
-
     // Pagination count variables
     const [itemsPerPage, setItemsPerPage] = useState(3); // default showing items per page
     const [currentPage, setCurrentPage] = useState(1); // default showing page is 1

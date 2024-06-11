@@ -20,7 +20,7 @@ const AllUsers = () => {
     // const location = useLocation();
     // const whereTo = location?.state
 
-    const { data: allUsers, isLoading } = useQuery({
+    const { data: allUsers, isLoading,refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const { data } = await axiosSecoure('/users')
@@ -71,6 +71,40 @@ const AllUsers = () => {
 
         }
     };
+
+    // admin role change
+    const handleChangeAdminRole = async(id, newStatus) => {
+        try {
+            // loading
+            setCustomLoading(true);
+
+            const { data } = await axiosSecoure.patch(`//${id}`, { status: newStatus })
+
+            if (data?.modifiedCount > 0) {
+                Swal.fire({
+                    title: `Successfully Changed the Role!`,
+                    text: `Role Changed! 🎉`,
+                    icon: 'success',
+                    confirmButtonText: 'Cool'
+                }).then(() => {
+                    // loader
+                    setCustomLoading(false)
+                    refetch()
+                });
+            } else {
+                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
+                // loader
+                setCustomLoading(false)
+                refetch()
+            }
+        }
+        catch (err) {
+            // console.log(err);
+            toast.error(err.response.data, { autoClose: 3000, theme: "colored" });
+            setCustomLoading(false);
+            refetch()
+        }
+    }
 
     // waiting time loader
     const [timeLoading, setTimeLoading] = useState(true);
@@ -124,7 +158,7 @@ const AllUsers = () => {
                         {
                             allUsers?.map((user) => {
                                 return <UsersTable key={user._id} user={user}
-                                    handleChangeRole={handleChangeRole}
+                                    handleChangeRole={handleChangeRole} handleChangeAdminRole={handleChangeAdminRole}
                                 />
                             })
                         }
