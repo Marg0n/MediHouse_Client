@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import Loader from "../../components/shared/Loader";
 import useTestsLists from "../../hooks/useTestsLists";
 import { FcNext, FcPrevious } from "react-icons/fc";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
 
 
 const AllTestsPage = () => {
@@ -9,14 +12,47 @@ const AllTestsPage = () => {
     // tests data source from DB
     const { testsLists, testsLoading } = useTestsLists();
 
-    // console.log(testsLists)
+    // Pagination count variables
+    const [itemsPerPage, setItemsPerPage] = useState(6); // default showing items per page are 6
+    const [currentPage, setCurrentPage] = useState(1); // default showing page is 1
+    const [dataCount, setDataCount] = useState();
 
+    const axiosCommon = useAxiosCommon();
 
-    if (testsLoading) {
+    const { data: testsListsCount ,  } = useQuery({
+        queryKey: ['testsListsCount'],
+        queryFn: async () => {
+            const { data } = await axiosCommon(`/testsListsCount?page=${currentPage}&size=${itemsPerPage}`)
+            setDataCount(data.counts)
+            return data
+        }
+    })
+    const { data: testsListPagination ,  isLoading: paginationLoding} = useQuery({
+        queryKey: ['testsListPagination',currentPage, itemsPerPage],
+        queryFn: async () => {
+            const { data } = await axiosCommon(`/testsListPagination?page=${currentPage}&size=${itemsPerPage}`)
+            return data
+        }
+    })
+
+    // console.log(testsListsCount)
+    const numberOfPages = Math.ceil(dataCount/itemsPerPage) ||  0
+
+    // pagination count
+    const pages = [...Array(numberOfPages).keys()].map(e => e + 1)
+
+    // handle pagination button
+    const handlePaginationButton = value =>{
+        setCurrentPage(value);
+        // console.log(value);
+        value => 24 && setItemsPerPage(Math.ceil(value/(Math.ceil(value/6))))        
+    }
+
+    // loader
+    if (paginationLoding) {
         <Loader />
     }
 
-    const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     return (
         <div className="container mx-auto ">
@@ -25,12 +61,12 @@ const AllTestsPage = () => {
 
             </div>
 
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
 
                 {
-                    testsLists?.map(test => {
+                    testsListPagination?.map(test => {
                         return <div key={test._id}
-                            className="card card-compact w-96 bg-base-100 shadow-xl max-h-96">
+                            className="card card-compact w-80 bg-base-100 shadow-xl max-h-96 hover:scale-105 hover:border hover:border-primary">
                             <figure className=" ">
                                 <img src={test?.testImage_url} alt="tests image" className="rounded-xl w-full " />
                             </figure>
@@ -65,7 +101,10 @@ const AllTestsPage = () => {
                     {
                         pages.map(page => {
                             return <>
-                                <button key={page} type="button" title="Page number" className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
+                                <button 
+                                onClick={() => handlePaginationButton(page)}
+                                key={page} type="button" title="Page number" 
+                                className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
                                 >{page}</button>
                             </>
                         })
