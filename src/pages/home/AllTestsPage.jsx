@@ -5,6 +5,7 @@ import { FcNext, FcPrevious } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosCommon from "../../hooks/useAxiosCommon";
+import { Helmet } from "react-helmet-async";
 
 
 const AllTestsPage = () => {
@@ -19,7 +20,7 @@ const AllTestsPage = () => {
 
     const axiosCommon = useAxiosCommon();
 
-    const { data: testsListsCount ,  } = useQuery({
+    const { data: testsListsCount, } = useQuery({
         queryKey: ['testsListsCount'],
         queryFn: async () => {
             const { data } = await axiosCommon(`/testsListsCount?page=${currentPage}&size=${itemsPerPage}`)
@@ -27,8 +28,8 @@ const AllTestsPage = () => {
             return data
         }
     })
-    const { data: testsListPagination ,  isLoading: paginationLoding} = useQuery({
-        queryKey: ['testsListPagination',currentPage, itemsPerPage],
+    const { data: testsListPagination, isLoading: paginationLoding } = useQuery({
+        queryKey: ['testsListPagination', currentPage, itemsPerPage],
         queryFn: async () => {
             const { data } = await axiosCommon(`/testsListPagination?page=${currentPage}&size=${itemsPerPage}`)
             return data
@@ -36,16 +37,16 @@ const AllTestsPage = () => {
     })
 
     // console.log(testsListsCount)
-    const numberOfPages = Math.ceil(dataCount/itemsPerPage) ||  0
+    const numberOfPages = Math.ceil(dataCount / itemsPerPage) || 0
 
     // pagination count
     const pages = [...Array(numberOfPages).keys()].map(e => e + 1)
 
     // handle pagination button
-    const handlePaginationButton = value =>{
+    const handlePaginationButton = value => {
         setCurrentPage(value);
         // console.log(value);
-        value => 24 && setItemsPerPage(Math.ceil(value/(Math.ceil(value/6))))        
+        value => 24 && setItemsPerPage(Math.ceil(value / (Math.ceil(value / 6))))
     }
 
     // loader
@@ -56,6 +57,10 @@ const AllTestsPage = () => {
 
     return (
         <div className="container mx-auto ">
+
+            <Helmet>
+                <title>Medi House 🩺 | All Tests</title>
+            </Helmet>
 
             <div>
 
@@ -101,10 +106,10 @@ const AllTestsPage = () => {
                     {
                         pages.map(page => {
                             return <>
-                                <button 
-                                onClick={() => handlePaginationButton(page)}
-                                key={page} type="button" title="Page number" 
-                                className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
+                                <button
+                                    onClick={() => handlePaginationButton(page)}
+                                    key={page} type="button" title="Page number"
+                                    className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
                                 >{page}</button>
                             </>
                         })

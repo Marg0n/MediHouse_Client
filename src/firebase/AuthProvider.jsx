@@ -89,21 +89,21 @@ const AuthProvider = ({ children }) => {
         )
         // console.log(data)
         if(data.token){
-            localStorage.setItem('token', data.token)
+            await localStorage.setItem('token', data.token)
         }
         return data
     }
 
     // Observer
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
+        const unsubscribe = onAuthStateChanged(auth,async currentUser => {
 
             setUser(currentUser);
             //token get
             if (currentUser) {
-                getToken(currentUser.email)
+                await getToken(currentUser.email)
             }else{
-                localStorage.removeItem('token')
+                await localStorage.removeItem('token')
             }
             setLoading(false);
         });

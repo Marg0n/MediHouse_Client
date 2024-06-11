@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import useAuth from './useAuth'
+import { useEffect } from 'react'
 
 // export
- const axiosSecure = axios.create({
+const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_SERVER,
   withCredentials: true,
 })
@@ -13,7 +14,7 @@ const useAxiosSecure = () => {
   const { loggedOut } = useAuth()
   const navigate = useNavigate()
 
-  // useEffect(() => {
+  useEffect(() => {
 
     // request authorization interceptor to add authorization headers for every secure request to the API
     axiosSecure.interceptors.request.use(
@@ -22,7 +23,7 @@ const useAxiosSecure = () => {
         req.headers.authorization = `Bearer ${token}`
         return req
       },
-      async error => {
+      error => {
         // Do something here with the error
         return Promise.reject(error)
       }
@@ -42,7 +43,7 @@ const useAxiosSecure = () => {
         return Promise.reject(error)
       }
     )
-  // }, [loggedOut, navigate])
+  }, [loggedOut, navigate])
 
   return axiosSecure
 }

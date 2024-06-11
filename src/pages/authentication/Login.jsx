@@ -37,10 +37,10 @@ const Login = () => {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const { email, password } = data;
 
-        signInUser(email, password)
+        await signInUser(email, password)
             .then(result => {
 
                 setCustomLoader(true);
@@ -52,7 +52,7 @@ const Login = () => {
                     // })
                 toast.success("Logged in successful!🎉", { autoClose: 2000, theme: "colored" })
 
-                if (result.user) {
+                if (result?.user) {
                     setCustomLoader(false);
                     navigate(whereTo, { replace: true });
                 }

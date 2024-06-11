@@ -11,7 +11,7 @@ const TestsDetails = () => {
     const axiosSecoure = useAxiosSecure()
 
     const { data: testsDetails = [], isLoading } = useQuery({
-        queryKey: ['testsDetails'],
+        queryKey: ['testsDetails',id],
         queryFn: async () => {
             const { data } = await axiosSecoure(`/testsLists/${id}`)
             return data
