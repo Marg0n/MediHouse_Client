@@ -89,7 +89,7 @@ const DashboardNav = () => {
 
                 <div className="mx-auto">
                     {/* logo */}
-                    <div className=" mx-auto btn btn-ghost">
+                    <div className=" mx-auto btn btn-ghost  animate__animated animate__heartBeat  animate__infinite">
                         <Link to="/" className='flex gap-2 items-center'>
                             <img className='w-auto h-7 rounded'
                                 referrerPolicy='no-referrer' src={logo} alt='logo' />
