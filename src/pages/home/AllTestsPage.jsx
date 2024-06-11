@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import Loader from "../../components/shared/Loader";
-import useTestsLists from "../../hooks/useTestsLists";
 import { FcNext, FcPrevious } from "react-icons/fc";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosCommon from "../../hooks/useAxiosCommon";
 import { Helmet } from "react-helmet-async";
@@ -11,7 +10,7 @@ import { Helmet } from "react-helmet-async";
 const AllTestsPage = () => {
 
     // tests data source from DB
-    const { testsLists, testsLoading } = useTestsLists();
+    // const { testsLists, testsLoading } = useTestsLists();
 
     // Pagination count variables
     const [itemsPerPage, setItemsPerPage] = useState(6); // default showing items per page are 6
@@ -20,7 +19,7 @@ const AllTestsPage = () => {
 
     const axiosCommon = useAxiosCommon();
 
-    const { data: testsListsCount, } = useQuery({
+    const { data: testsListsCount, isLoading: pageNumberLoading } = useQuery({
         queryKey: ['testsListsCount'],
         queryFn: async () => {
             const { data } = await axiosCommon(`/testsListsCount?page=${currentPage}&size=${itemsPerPage}`)
@@ -28,7 +27,7 @@ const AllTestsPage = () => {
             return data
         }
     })
-    const { data: testsListPagination, isLoading: paginationLoding } = useQuery({
+    const { data: testsListPagination, isLoading: paginationLoading } = useQuery({
         queryKey: ['testsListPagination', currentPage, itemsPerPage],
         queryFn: async () => {
             const { data } = await axiosCommon(`/testsListPagination?page=${currentPage}&size=${itemsPerPage}`)
@@ -37,7 +36,7 @@ const AllTestsPage = () => {
     })
 
     // console.log(testsListsCount)
-    const numberOfPages = Math.ceil(dataCount / itemsPerPage) || 0
+    const numberOfPages = Math.ceil(dataCount / itemsPerPage) || 1
 
     // pagination count
     const pages = [...Array(numberOfPages).keys()].map(e => e + 1)
@@ -46,17 +45,18 @@ const AllTestsPage = () => {
     const handlePaginationButton = value => {
         setCurrentPage(value);
         // console.log(value);
-        value => 24 && setItemsPerPage(Math.ceil(value / (Math.ceil(value / 6))))
+        { value === 24 && setItemsPerPage(Math.ceil(value / (Math.ceil(value / 6)))) }
     }
+    // console.log(typeof(currentPage) , currentPage)
 
     // loader
-    if (paginationLoding) {
+    if (pageNumberLoading || paginationLoading) {
         <Loader />
     }
 
 
     return (
-        <div className="container mx-auto ">
+        <div className="container mx-auto flex flex-col justify-center items-center">
 
             <Helmet>
                 <title>Medi House 🩺 | All Tests</title>
@@ -66,8 +66,9 @@ const AllTestsPage = () => {
 
             </div>
 
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
 
+                {/* cards */}
                 {
                     testsListPagination?.map(test => {
                         return <div key={test._id}
@@ -90,11 +91,16 @@ const AllTestsPage = () => {
                 }
             </div>
 
+            {/* pagination */}
             <div className="mt-6 mx-auto">
                 <div className="flex justify-center space-x-1">
 
                     {/* previous */}
-                    <button title="previous" type="button" className='px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-secondary  hover:text-white'>
+                    <button
+                        disabled= {currentPage === 1}
+                        onClick={() => handlePaginationButton( currentPage - 1)}
+                        title="previous" type="button"
+                        className='px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-secondary  hover:text-white'>
 
                         <div className='flex items-center -mx-1'>
                             <FcPrevious />
@@ -103,20 +109,27 @@ const AllTestsPage = () => {
 
                     </button>
 
+                    {/* number of pages */}
                     {
                         pages.map(page => {
                             return <>
                                 <button
                                     onClick={() => handlePaginationButton(page)}
-                                    key={page} type="button" title="Page number"
-                                    className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
+                                    key={page}
+                                    type="button"
+                                    title="Pagination Button"
+                                    className={`hidden ${currentPage == page ? 'bg-blue-500 text-white' : ''} px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
                                 >{page}</button>
                             </>
                         })
                     }
 
                     {/* next */}
-                    <button title="next" type="button" className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-secondary disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'>
+                    <button
+                        disabled= {currentPage === numberOfPages}
+                        onClick={() => handlePaginationButton(currentPage + 1)}
+                        title="next" type="button"
+                        className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-secondary disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'>
 
                         <div className='flex items-center -mx-1'>
                             <span className='mx-1'>Next</span>
