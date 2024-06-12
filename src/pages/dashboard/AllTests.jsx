@@ -7,16 +7,18 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AllTestsTable from "../../components/dashboard/tests/AllTestsTable";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
 
 const AllTests = () => {
 
     const axiosSecure = useAxiosSecure()
+    const axiosCommon = useAxiosCommon()
     const [customLoading, setCustomLoading] = useState(false);
 
     const { data: tests, isLoading, refetch } = useQuery({
         queryKey: ['tests'],
         queryFn: async () => {
-            const { data } = await axiosSecure('/tests')
+            const { data } = await axiosCommon('/tests')
             return data
         }
     })
