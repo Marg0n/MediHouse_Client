@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { Helmet } from "react-helmet-async";
-import { AttentionSeeker } from "react-awesome-reveal";
-import UsersTable from "../../components/admin/UsersTable";
-import { toast } from "react-toastify";
-import Loader from "../../components/shared/Loader";
 import { useEffect, useState } from "react";
+import { AttentionSeeker } from "react-awesome-reveal";
+import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
+import UsersTable from "../../components/admin/UsersTable";
+import Loader from "../../components/shared/Loader";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
 const AllUsers = () => {
 
-    const axiosSecoure = useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
     const [customLoading, setCustomLoading] = useState(false);
 
     // Navigation
@@ -20,10 +20,10 @@ const AllUsers = () => {
     // const location = useLocation();
     // const whereTo = location?.state
 
-    const { data: allUsers, isLoading,refetch } = useQuery({
+    const { data: allUsers, isLoading, refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const { data } = await axiosSecoure('/users')
+            const { data } = await axiosSecure('/users')
             return data
         }
     })
@@ -37,7 +37,7 @@ const AllUsers = () => {
 
             setCustomLoading(true);
 
-            const { data } = await axiosSecoure.patch(`/update_user/${id}`, { status: newStatus })
+            const { data } = await axiosSecure.patch(`/update_user/${id}`, { status: newStatus })
             // console.log(data)
 
             if (data?.modifiedCount > 0) {
@@ -74,12 +74,12 @@ const AllUsers = () => {
     };
 
     // admin role change
-    const handleChangeAdminRole = async(id, newStatus) => {
+    const handleChangeAdminRole = async (id, newStatus) => {
         try {
             // loading
             setCustomLoading(true);
 
-            const { data } = await axiosSecoure.patch(`/adminRole/${id}`, { status: newStatus })
+            const { data } = await axiosSecure.patch(`/adminRole/${id}`, { status: newStatus })
 
             if (data?.modifiedCount > 0) {
                 Swal.fire({

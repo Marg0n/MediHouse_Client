@@ -1,22 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { Helmet } from "react-helmet-async";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loader from "../../components/shared/Loader";
-import { useEffect, useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AllTestsTable from "../../components/dashboard/tests/AllTestsTable";
 
 const AllTests = () => {
 
-    const axiosSecoure = useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
     const [customLoading, setCustomLoading] = useState(false);
 
     const { data: tests, isLoading, refetch } = useQuery({
         queryKey: ['tests'],
         queryFn: async () => {
-            const { data } = await axiosSecoure('/tests')
+            const { data } = await axiosSecure('/tests')
             return data
         }
     })
@@ -43,7 +43,7 @@ const AllTests = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 //delete
-                await axiosSecoure.delete(`${import.meta.env.VITE_SERVER}/deleteTests/${id}`)
+                await axiosSecure.delete(`${import.meta.env.VITE_SERVER}/deleteTests/${id}`)
                     .then(data => {
                         // console.log(data);
                         if (data.deletedCount > 0) {
@@ -85,7 +85,7 @@ const AllTests = () => {
     //         // loading
     //         setCustomLoading(true);
 
-    //         const { data } = await axiosSecoure.put(`/updateBanner/${id}`, { status: newStatus })
+    //         const { data } = await axiosSecure.put(`/updateBanner/${id}`, { status: newStatus })
 
     //         if (data?.modifiedCount > 0) {
     //             Swal.fire({
@@ -163,7 +163,7 @@ const AllTests = () => {
                             tests?.map((test) => {
                                 return <AllTestsTable key={test._id} test={test}
                                     handleDelete={handleDelete}
-                                    // handleChangeActive={handleChangeActive}
+                                // handleChangeActive={handleChangeActive}
                                 />
                             })
                         }

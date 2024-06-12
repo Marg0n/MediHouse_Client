@@ -1,23 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { Helmet } from "react-helmet-async";
-import useAuth from "../../hooks/useAuth";
-import Loader from "../../components/shared/Loader";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import AppointmentTable from "../../components/dashboard/appointment/AppointmentTable";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import AppointmentTable from "../../components/dashboard/appointment/AppointmentTable";
+import Loader from "../../components/shared/Loader";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const UpcomingAppointment = () => {
 
-    const  {user, loading, setLoading}  = useAuth();
-    const axiosSecoure = useAxiosSecure()
+    const { user, loading, setLoading } = useAuth();
+    const axiosSecure = useAxiosSecure()
 
     // get user specific appointment data
-    const { data: appointments = [], isLoading,refetch } = useQuery({
+    const { data: appointments = [], isLoading, refetch } = useQuery({
         queryKey: ['appointments'],
         queryFn: async () => {
-            const { data } = await axiosSecoure(`/appointment/${user?.email}`)
+            const { data } = await axiosSecure(`/appointment/${user?.email}`)
             return data
         }
     })
@@ -32,9 +32,9 @@ const UpcomingAppointment = () => {
             // loading
             setLoading(true);
 
-            const { data } = await axiosSecoure.patch(`/appointmentStatus/${id}`,{ status: newStatus })
+            const { data } = await axiosSecure.patch(`/appointmentStatus/${id}`, { status: newStatus })
 
-            if(data?.modifiedCount > 0) {
+            if (data?.modifiedCount > 0) {
                 Swal.fire({
                     title: `Successfully Canceled Your Booking!`,
                     text: `Booking Canceled! 🎉`,
@@ -45,8 +45,8 @@ const UpcomingAppointment = () => {
                     setLoading(false)
                     refetch()
                 });
-            }else {
-                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" }) 
+            } else {
+                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
                 // loader
                 setLoading(false)
                 refetch()
@@ -54,14 +54,14 @@ const UpcomingAppointment = () => {
         }
         catch (err) {
             // console.log(err);
-            toast.error(err.response.data, { autoClose: 3000, theme: "colored" });            
+            toast.error(err.response.data, { autoClose: 3000, theme: "colored" });
             setLoading(false);
             refetch()
-         }
+        }
     }
 
     if (loading || isLoading) {
-        <Loader/>
+        <Loader />
     }
 
     return (

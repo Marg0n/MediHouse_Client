@@ -4,10 +4,13 @@ import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css';
 import { FaDownload } from 'react-icons/fa';
 import { jsPDF } from "jspdf";
+import moment from 'moment';
 
 const TestResultTable = ({ appointmentsResult }) => {
 
     const {  imageURL, testName, testsDescription, testPrice, appointmentsDate, userMail, reportStatus } = appointmentsResult;
+
+    const date = moment(appointmentsDate).format("Do MMM YYYY")
 
 
     const handlePDF = () => {
@@ -71,7 +74,7 @@ const TestResultTable = ({ appointmentsResult }) => {
                     {testsDescription}
                 </td>
                 <td>{testPrice}</td>
-                <td>{appointmentsDate}</td>
+                <td>{date}</td>
                 <td>{reportStatus}</td>
 
                 <td className=''>

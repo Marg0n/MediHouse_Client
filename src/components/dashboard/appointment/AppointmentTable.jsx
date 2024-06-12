@@ -7,10 +7,13 @@ import { CgBlock, CgUnblock } from 'react-icons/cg';
 import { jsPDF } from "jspdf";
 import useUsersProfile from '../../../hooks/useUsersProfile';
 import { FcApproval } from 'react-icons/fc';
+import moment from 'moment';
 
 const AppointmentTable = ({ appointment, handleChangeStatus }) => {
 
     const { _id, imageURL, testName, testsDescription, testPrice, appointmentsDate, userMail, reportStatus } = appointment;
+
+    const date  = moment(appointmentsDate).format("Do MMM YYYY")
 
     const [userData, ,] = useUsersProfile()
 
@@ -81,7 +84,7 @@ const AppointmentTable = ({ appointment, handleChangeStatus }) => {
                     {testsDescription}
                 </td>
                 <td>{testPrice}</td>
-                <td>{appointmentsDate}</td>
+                <td>{date}</td>
                 <td>{reportStatus}</td>
                 <th className={userData[0]?.isAdmin === true ? `` : 'hidden'}>{userMail}</th>
 

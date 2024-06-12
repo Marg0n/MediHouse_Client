@@ -1,5 +1,6 @@
 import 'animate.css';
 import { jsPDF } from "jspdf";
+import moment from 'moment';
 import { PropTypes } from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 import { MdDeleteForever, MdOutlineChangeCircle } from 'react-icons/md';
@@ -9,7 +10,9 @@ import 'react-tooltip/dist/react-tooltip.css';
 
 const AllTestsTable = ({ handleDelete, test }) => {
 
-    const { _id, test_name, testImage_url, details, test_price, test_date, test_slots } = test;
+    const { _id, test_name, testImage_url, details, test_price, test_date , test_slots } = test;
+
+    const testDate = moment(test_date).format("Do MMM YYYY")
 
     const handlePDF = () => {
 
@@ -72,7 +75,7 @@ const AllTestsTable = ({ handleDelete, test }) => {
                     {details}
                 </td>
                 <td>{test_price}</td>
-                <td>{test_date}</td>
+                <td>{testDate}</td>
                 <td>{test_slots}</td>
 
 

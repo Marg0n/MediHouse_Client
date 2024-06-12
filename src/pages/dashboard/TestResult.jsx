@@ -1,22 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { Helmet } from "react-helmet-async";
-import useAuth from "../../hooks/useAuth";
-import Loader from "../../components/shared/Loader";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import TestResultTable from "../../components/dashboard/tests/TestResultTable";
+import Loader from "../../components/shared/Loader";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const TestResult = () => {
 
     const { user, loading } = useAuth();
-    const axiosSecoure = useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
 
     // get user specific appointment data
     const { data: appointmentsResults = [], isLoading } = useQuery({
         queryKey: ['appointmentsResults'],
         queryFn: async () => {
-            const { data } = await axiosSecoure(`/appointmentResult/${user?.email}`)
+            const { data } = await axiosSecure(`/appointmentResult/${user?.email}`)
             return data
         }
     })

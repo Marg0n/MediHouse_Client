@@ -1,24 +1,24 @@
-import { Link, useParams } from "react-router-dom";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import Loader from "../../components/shared/Loader";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { TiArrowBack } from "react-icons/ti";
-import useAuth from "../../hooks/useAuth";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import Loader from "../../components/shared/Loader";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const TestsDetails = () => {
 
     const { id } = useParams();
-    const axiosSecoure = useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
     const { user, loading, setLoading } = useAuth();
 
     const { data: testsDetails = [], isLoading, refetch } = useQuery({
         queryKey: ['testsDetails', id],
         queryFn: async () => {
-            const { data } = await axiosSecoure(`/testsLists/${id}`)
+            const { data } = await axiosSecure(`/testsLists/${id}`)
             return data
         }
     })
@@ -38,15 +38,15 @@ const TestsDetails = () => {
     const booking = { testID, imageURL, testName, testsDescription, testPrice, appointmentsDate, userMail, reportStatus }
 
 
-    const handleBookNow = async() => {
+    const handleBookNow = async () => {
 
         try {
             // loading
             setLoading(true);
 
-            const { data } = await axiosSecoure.post(`/userBookings`,booking)
+            const { data } = await axiosSecure.post(`/userBookings`, booking)
 
-            if(data) {
+            if (data) {
                 Swal.fire({
                     title: `${testName} Successfully Booked!`,
                     text: `${testName} booking successful! 🎉`,
@@ -57,20 +57,20 @@ const TestsDetails = () => {
                     setLoading(false)
                     refetch()
                 });
-            }else {
-                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" }) 
+            } else {
+                toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
                 // loader
                 setLoading(false)
                 refetch()
             }
-            
+
         }
         catch (err) {
             // console.log(err);
-            toast.error(err.response.data, { autoClose: 5000, theme: "colored" });            
+            toast.error(err.response.data, { autoClose: 5000, theme: "colored" });
             setLoading(false);
             refetch()
-         }
+        }
     }
 
     if (isLoading || loading) {

@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { Helmet } from "react-helmet-async";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import Loader from "../../components/shared/Loader";
-import { useEffect, useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AllBannerTable from "../../components/dashboard/banner/AllBannerTable";
@@ -12,13 +12,13 @@ import AllBannerTable from "../../components/dashboard/banner/AllBannerTable";
 
 const AllBanners = () => {
 
-    const axiosSecoure = useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
     const [customLoading, setCustomLoading] = useState(false);
 
     const { data: banners, isLoading, refetch } = useQuery({
         queryKey: ['banners'],
         queryFn: async () => {
-            const { data } = await axiosSecoure('/banners')
+            const { data } = await axiosSecure('/banners')
             return data
         }
     })
@@ -45,7 +45,7 @@ const AllBanners = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 //delete
-                await axiosSecoure.delete(`${import.meta.env.VITE_SERVER}/deleteBanner/${id}`)
+                await axiosSecure.delete(`${import.meta.env.VITE_SERVER}/deleteBanner/${id}`)
                     .then(data => {
                         // console.log(data);
                         if (data.deletedCount > 0) {
@@ -87,7 +87,7 @@ const AllBanners = () => {
             // loading
             setCustomLoading(true);
 
-            const { data } = await axiosSecoure.patch(`/updateBanner/${id}`, { status: newStatus })
+            const { data } = await axiosSecure.patch(`/updateBanner/${id}`, { status: newStatus })
 
             if (data?.modifiedCount > 0) {
                 Swal.fire({

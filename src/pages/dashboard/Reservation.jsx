@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { Helmet } from "react-helmet-async";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import Loader from "../../components/shared/Loader";
-import { useEffect, useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import AppointmentTable from "../../components/dashboard/appointment/AppointmentTable";
@@ -12,7 +12,7 @@ import useUsersProfile from "../../hooks/useUsersProfile";
 
 const Reservation = () => {
 
-    const axiosSecoure = useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
     const [customLoading, setCustomLoading] = useState(false);
     const [userData, , isLoading] = useUsersProfile()
     // console.log(userData[0].email, userData[0].isAdmin)
@@ -20,7 +20,7 @@ const Reservation = () => {
     const { data: appointments, isLoading: appointLoad, refetch } = useQuery({
         queryKey: ['appointments'],
         queryFn: async () => {
-            const { data } = await axiosSecoure('/appointment')
+            const { data } = await axiosSecure('/appointment')
             return data
         }
     })
@@ -35,7 +35,7 @@ const Reservation = () => {
             // loading
             setCustomLoading(true);
 
-            const { data } = await axiosSecoure.patch(`/appointmentStatus/${id}`, { status: newStatus })
+            const { data } = await axiosSecure.patch(`/appointmentStatus/${id}`, { status: newStatus })
 
             if (data?.modifiedCount > 0) {
                 Swal.fire({
@@ -102,7 +102,7 @@ const Reservation = () => {
                             <th>Price</th>
                             <th>Appointment Date</th>
                             <th>Status</th>
-                            <th className={userData[0]?.isAdmin === true ? ``: 'hidden'}>Email</th>
+                            <th className={userData[0]?.isAdmin === true ? `` : 'hidden'}>Email</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -129,8 +129,8 @@ const Reservation = () => {
                             <th>Price</th>
                             <th>Appointment Date</th>
                             <th>Status</th>
-                            <th className={userData[0]?.isAdmin === true ? ``: 'hidden'}>Email</th>
-                            <th>Action</th>                            
+                            <th className={userData[0]?.isAdmin === true ? `` : 'hidden'}>Email</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
 
