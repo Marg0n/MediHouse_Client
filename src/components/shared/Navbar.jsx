@@ -30,11 +30,16 @@ const Navbar = () => {
       className={({ isActive }) =>
         ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
         }`}>All Tests</NavLink></li>
-    <li><NavLink to='/about'
+    <li><NavLink to='/featured'
       end
       className={({ isActive }) =>
         ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
-        }`}>About</NavLink></li>
+        }`}>Featured</NavLink></li>
+    <li><NavLink to='/healthQnA'
+      end
+      className={({ isActive }) =>
+        ` transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+        }`}>HealthQnA</NavLink></li>
     {
       user && <>
         <li><NavLink to='/dashboard'

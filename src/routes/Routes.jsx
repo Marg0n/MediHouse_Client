@@ -26,6 +26,8 @@ import AllTestsPage from "../pages/home/AllTestsPage";
 import TestsDetails from "../pages/home/TestsDetails";
 import Reservation from "../pages/dashboard/Reservation";
 import UpdateTest from "../pages/dashboard/UpdateTest";
+import HealthQnAPage from "../components/home/HealthQnAPage";
+import Featured from "../components/home/Featured";
 
 
 
@@ -51,6 +53,14 @@ export const router = createBrowserRouter([
             {
                 path: "/allTestPage",
                 element: <AllTestsPage />,
+            },
+            {
+                path: "/featured",
+                element: <Featured />,
+            },
+            {
+                path: "/healthQnA",
+                element: <HealthQnAPage />,
             },
             {
                 path: "/testDetails/:id",

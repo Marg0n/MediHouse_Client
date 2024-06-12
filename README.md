@@ -34,3 +34,5 @@ Resources:
 - [framer-motion](https://www.framer.com/motion/)
 - [jspdf](https://www.npmjs.com/package/jspdf)
 - [Moment.js](https://momentjs.com)
+- [Swiper](https://swiperjs.com/get-started)
+- [framer-motion](https://www.framer.com/motion)

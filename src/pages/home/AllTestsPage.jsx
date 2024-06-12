@@ -103,6 +103,7 @@ const AllTestsPage = () => {
     }
 
     refetch();
+    
 
     // loader
     if (pageNumberLoading || dataLoading) {
