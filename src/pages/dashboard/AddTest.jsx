@@ -136,7 +136,7 @@ const AddTest = () => {
                     {/* photo */}
                     <div className='mt-4'>
                         <label htmlFor='test_image' className='block mb-2 text-sm  font-medium '>
-                            Upload Image:
+                            Upload Image
                         </label>
 
                         <div className="flex gap-8 justify-center items-center">
@@ -190,7 +190,7 @@ const AddTest = () => {
                             {...register("details", { required: true })}
                         />
                         <div className="mt-1 animate-pulse">
-                            {errors.details && <span className="text-red-500">Please fill up Name field</span>}
+                            {errors.details && <span className="text-red-500">Please fill up Details field</span>}
                         </div>
                     </div>
 
@@ -211,7 +211,7 @@ const AddTest = () => {
                             {...register("price", { required: true })}
                         />
                         <div className="mt-1 animate-pulse">
-                            {errors.price && <span className="text-red-500">Please fill up Name field</span>}
+                            {errors.price && <span className="text-red-500">Please fill up Price field</span>}
                         </div>
                     </div>
 
@@ -233,7 +233,7 @@ const AddTest = () => {
                             {...register("date", { required: true })}
                         />
                         <div className="mt-1 animate-pulse">
-                            {errors.date && <span className="text-red-500">Please fill up Name field</span>}
+                            {errors.date && <span className="text-red-500">Please fill up Date field</span>}
                         </div>
                     </div>
 
@@ -254,7 +254,7 @@ const AddTest = () => {
                             {...register("slots", { required: true })}
                         />
                         <div className="mt-1 animate-pulse">
-                            {errors.slots && <span className="text-red-500">Please fill up Name field</span>}
+                            {errors.slots && <span className="text-red-500">Please fill up Number of Slots field</span>}
                         </div>
                     </div>
 
