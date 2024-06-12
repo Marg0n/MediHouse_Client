@@ -24,6 +24,8 @@ import ProfileInfoEdit from "../components/dashboard/profile/ProfileInfoEdit";
 import ViewDetails from "../components/admin/ViewDetails";
 import AllTestsPage from "../pages/home/AllTestsPage";
 import TestsDetails from "../pages/home/TestsDetails";
+import Reservation from "../pages/dashboard/Reservation";
+import UpdateTest from "../pages/dashboard/UpdateTest";
 
 
 
@@ -97,6 +99,14 @@ export const router = createBrowserRouter([
             {
                 path: "allTests",
                 element: <AdminRoutes><AllTests /></AdminRoutes>,
+            },
+            {
+                path: "allTests/testEdit/:id",
+                element: <AdminRoutes><UpdateTest /></AdminRoutes>,
+            },
+            {
+                path: "reservations",
+                element: <AdminRoutes><Reservation /></AdminRoutes>,
             },
             {
                 path: "addBanner",

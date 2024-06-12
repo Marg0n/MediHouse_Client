@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BsClipboard2DataFill, BsClipboard2PulseFill } from 'react-icons/bs';
 import { FaUsers } from 'react-icons/fa';
 import { FcStatistics } from 'react-icons/fc';
-import { GiKnightBanner, GiTatteredBanner, GiTestTubes } from 'react-icons/gi';
+import { GiBookmarklet, GiKnightBanner, GiTatteredBanner, GiTestTubes } from 'react-icons/gi';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { MdSpaceDashboard } from 'react-icons/md';
 import { RiTestTubeLine } from 'react-icons/ri';
@@ -241,6 +241,20 @@ const DashboardNav = () => {
                                         <GiTestTubes size={22} />
 
                                         <span className="mx-4 font-medium">All tests</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='reservations'
+                                        end
+                                        className={({ isActive }) =>
+                                            `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform rounded-lg hover:bg-primary hover:text-base-300 ${isActive ? 'bg-primary text-base-300' : ''
+                                            }`
+                                        }
+                                    >
+                                        <GiBookmarklet size={22} />
+
+                                        <span className="mx-4 font-medium">Reservations</span>
                                     </NavLink>
                                 </li>
                                 <li>

@@ -7,11 +7,15 @@ import { FaDownload } from 'react-icons/fa';
 import { CgBlock, CgUnblock } from 'react-icons/cg';
 import { jsPDF } from "jspdf";
 import { MdOutlineChangeCircle } from 'react-icons/md';
+import useAuth from '../../hooks/useAuth';
 
 const UsersTable = ({ user, handleChangeRole, handleChangeAdminRole }) => {
 
 
     const { _id, email, name, bloodGroup, district, upazila, status, isAdmin, image_url } = user;
+
+    const { user: firebase } = useAuth()
+    const userEmail = firebase?.email
 
     const handlePDF = () => {
 
@@ -96,9 +100,10 @@ const UsersTable = ({ user, handleChangeRole, handleChangeAdminRole }) => {
                     <br />
                     <button
                         onClick={() => handleChangeAdminRole(_id, isAdmin ? false : true)}
+                        disabled={email == userEmail}
                         data-tooltip-id="updateAdmin-tooltip"
                         data-tooltip-content="updateAdmin"
-                        className='btn btn-neutral hover:btn-info btn-xs btn-circle animate__infinite hover:animate-none animate-spin'
+                        className='btn btn-neutral hover:btn-info btn-xs btn-circle animate__infinite hover:animate-none animate-spin disabled:cursor-not-allowed disabled:btn-outline disabled:animate-none'
                     >
                         <MdOutlineChangeCircle
                             size={20}
