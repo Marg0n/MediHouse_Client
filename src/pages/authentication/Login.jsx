@@ -12,12 +12,14 @@ import Loader from '../../components/shared/Loader';
 import useAuth from "../../hooks/useAuth";
 import logo from '/logo_mediHouse.png';
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
 
 
 const Login = () => {
 
-    const { signInUser, user } = useAuth();
+    const { signInUser, user, loggedOut } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const axiosCommon = useAxiosCommon();
 
     // custom loader for login
     const [customLoader, setCustomLoader] = useState(false);
@@ -30,6 +32,7 @@ const Login = () => {
     const location = useLocation();
     const whereTo = location?.state || '/dashboard';
 
+
     // React hook form
     const {
         register,
@@ -41,15 +44,26 @@ const Login = () => {
         const { email, password } = data;
 
         await signInUser(email, password)
-            .then(result => {
+            .then(async result => {
 
                 setCustomLoader(true);
                 // console.log(result.user)
+
+                // blocked or not
+                const { data } = await axiosCommon(`/users/${email}`)
+                // console.log(data[0]?.status)
+                if(data[0]?.status === 'blocked'){
+                    toast.error(`${data[0]?.name} is Blocked! 😵`, { autoClose: 5000, theme: "colored" })
+                    setCustomLoader(false)
+                    loggedOut();
+                    return navigate('/login')
+                }
+
                 const loggedUser = { email };
                 axiosSecure.post(`/jwt`, loggedUser)
-                    // .then(res => {
-                    //     console.log(res.data)
-                    // })
+                // .then(res => {
+                //     console.log(res.data)
+                // })
                 toast.success("Logged in successful!🎉", { autoClose: 2000, theme: "colored" })
 
                 if (result?.user) {
@@ -120,7 +134,7 @@ const Login = () => {
         return <Loader />;
     }
 
-    if(user){
+    if (user) {
         // toast.info('You are already Logged in!', { autoClose: 3000, theme: "colored" });
         return <Navigate to='/' state={whereTo} />
     }

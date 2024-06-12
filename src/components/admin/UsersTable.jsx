@@ -95,7 +95,7 @@ const UsersTable = ({ user, handleChangeRole, handleChangeAdminRole }) => {
                     {isAdmin ? "Admin" : 'User'}
                     <br />
                     <button
-                        onClick={() => handleChangeAdminRole(_id, isAdmin ? "User" : 'Admin')}
+                        onClick={() => handleChangeAdminRole(_id, isAdmin ? false : true)}
                         data-tooltip-id="updateAdmin-tooltip"
                         data-tooltip-content="updateAdmin"
                         className='btn btn-neutral hover:btn-info btn-xs btn-circle animate__infinite hover:animate-none animate-spin'

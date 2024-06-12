@@ -38,7 +38,7 @@ const AllUsers = () => {
             setCustomLoading(true);
 
             const { data } = await axiosSecoure.patch(`/update_user/${id}`, { status: newStatus })
-            console.log(data)
+            // console.log(data)
 
             if (data?.modifiedCount > 0) {
                 Swal.fire({
@@ -51,7 +51,8 @@ const AllUsers = () => {
                     setCustomLoading(false)
                     // navigate(whereTo)
                     // Reload the page
-                    window.location.reload();
+                    // window.location.reload();
+                    refetch()
                 });
             } else {
                 toast.error('Something went Wrong!', { autoClose: 2000, theme: "colored" })
@@ -78,7 +79,7 @@ const AllUsers = () => {
             // loading
             setCustomLoading(true);
 
-            const { data } = await axiosSecoure.patch(`//${id}`, { status: newStatus })
+            const { data } = await axiosSecoure.patch(`/adminRole/${id}`, { status: newStatus })
 
             if (data?.modifiedCount > 0) {
                 Swal.fire({
