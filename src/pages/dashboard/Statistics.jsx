@@ -6,6 +6,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loader from "../../components/shared/Loader";
 import { useQuery } from "@tanstack/react-query";
 import { GiTestTubes } from "react-icons/gi";
+import SalesLineChart from "../../components/dashboard/statistics/SalesLineChart";
 
 
 const Statistics = () => {
@@ -13,51 +14,61 @@ const Statistics = () => {
     const axiosSecure = useAxiosSecure()
 
     // users
-    const { data: allUsers, isLoading } = useQuery({
-        queryKey: ['users'],
-        queryFn: async () => {
-            const { data } = await axiosSecure('/users')
-            return data
-        }
-    })
+    // const { data: allUsers, isLoading } = useQuery({
+    //     queryKey: ['users'],
+    //     queryFn: async () => {
+    //         const { data } = await axiosSecure('/users')
+    //         return data
+    //     }
+    // })
 
-    // tests
-    const { data: tests, isLoading: testsLoader } = useQuery({
-        queryKey: ['tests'],
-        queryFn: async () => {
-            const { data } = await axiosSecure('/tests')
-            return data
-        }
-    })
+    // // tests
+    // const { data: tests, isLoading: testsLoader } = useQuery({
+    //     queryKey: ['tests'],
+    //     queryFn: async () => {
+    //         const { data } = await axiosSecure('/tests')
+    //         return data
+    //     }
+    // })
 
-    // bookings
-    const { data: appointments, isLoading: appointLoad } = useQuery({
-        queryKey: ['appointments'],
-        queryFn: async () => {
-            const { data } = await axiosSecure('/appointment')
-            return data
-        }
-    })
+    // // bookings
+    // const { data: appointments, isLoading: appointLoad } = useQuery({
+    //     queryKey: ['appointments'],
+    //     queryFn: async () => {
+    //         const { data } = await axiosSecure('/appointment')
+    //         return data
+    //     }
+    // })
 
-    // banners
-    const { data: banners, isLoading: bannerLoader} = useQuery({
-        queryKey: ['banners'],
-        queryFn: async () => {
-            const { data } = await axiosSecure('/banners')
-            return data
-        }
-    })
+    // // banners
+    // const { data: banners, isLoading: bannerLoader} = useQuery({
+    //     queryKey: ['banners'],
+    //     queryFn: async () => {
+    //         const { data } = await axiosSecure('/banners')
+    //         return data
+    //     }
+    // })
 
-    // Get total price of all appointments
-    const { data: totalPriceData, isLoading: isLoadingTotalPrice } = useQuery({
-        queryKey: ['totalPrice'],
+    // // Get total price of all appointments
+    // const { data: totalPriceData, isLoading: isLoadingTotalPrice } = useQuery({
+    //     queryKey: ['totalPrice'],
+    //     queryFn: async () => {
+    //         const { data } = await axiosSecure('/appointments/totalPrice');
+    //         return data.totalPrice;
+    //     }
+    // });
+
+
+    // Fetch all the data for statistics
+    const { data: statData = {}, isLoading } = useQuery({
+        queryKey: ['statData'],
         queryFn: async () => {
-            const { data } = await axiosSecure('/appointments/totalPrice');
-            return data.totalPrice;
+            const { data } = await axiosSecure('/appointmentAdminStat');
+            return data;
         }
     });
 
-    if (isLoading || testsLoader || appointLoad || bannerLoader || isLoadingTotalPrice ) {
+    if (isLoading) {
         return <Loader />
     }
 
@@ -90,7 +101,7 @@ const Statistics = () => {
                                     Total Sales
                                 </p>
                                 <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                                    ${totalPriceData}
+                                    ${statData.totalPrice}
                                 </h4>
                             </div>
                         </div>
@@ -106,7 +117,7 @@ const Statistics = () => {
                                     Total User
                                 </p>
                                 <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                                    {allUsers.length}
+                                    {statData.totalUsers}
                                 </h4>
                             </div>
                         </div>
@@ -122,7 +133,7 @@ const Statistics = () => {
                                     Total Bookings
                                 </p>
                                 <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                                    {appointments.length}
+                                    {statData.totalBooking}
                                 </h4>
                             </div>
                         </div>
@@ -138,7 +149,7 @@ const Statistics = () => {
                                     Total Banner
                                 </p>
                                 <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                                    {banners.length}
+                                    {statData.totalBanners}
                                 </h4>
                             </div>
                         </div>
@@ -147,27 +158,30 @@ const Statistics = () => {
                             <div
                                 className={`bg-clip-border -mx-4 rounded-xl overflow-hidden bg-gradient-to-tr shadow-lg absolute -mt-10 grid h-16 w-16 place-items-center from-orange-600 to-yellow-400 text-white shadow-pink-500/40`}
                             >
-                                <GiTestTubes  className='w-6 h-6 text-white' />
+                                <GiTestTubes className='w-6 h-6 text-white' />
                             </div>
                             <div className='p-6 text-right'>
                                 <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
                                     Total Tests
                                 </p>
                                 <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                                    {tests.length}
+                                    {statData.totalTests}
                                 </h4>
                             </div>
                         </div>
                     </div>
 
-                    <div className='mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3'>
+                    <div
+                    className='mb-4 grid grid-cols-1 gap-6 xl:grid-cols-2 '
+                    >
                         {/* Total Sales Graph */}
                         <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2'>
                             {/* Render Chart Here */}
+                            <SalesLineChart data={statData?.chartData} title={'Sales Over Time'} />
                         </div>
                         {/* Calender */}
                         <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden'>
-                            {/* <Calendar color='#F43F5E' /> */}
+                            <SalesLineChart data={statData?.chartData2} title={'pending vs canceled vs delivered'}/>
                         </div>
                     </div>
                 </div>
