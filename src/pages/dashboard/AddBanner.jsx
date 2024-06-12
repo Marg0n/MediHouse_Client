@@ -31,7 +31,7 @@ const AddBanner = () => {
 
         // const form = e.target;
 
-        const { bannerName, bannerTitle, bannerDescription, bannerCouponCode, bannerCouponRate: banner_CouponRate } = data;
+        const { bannerName, bannerTitle, bannerDescription, bannerCouponCode,  banner_CouponRate } = data;
         const bannerCouponRate = parseFloat(banner_CouponRate)
         const image = e.target.bannerImg.files[0]
         const isActive = false ;
@@ -42,7 +42,7 @@ const AddBanner = () => {
             // upload image and get image url        
             const bannerImage = await imageUpload(image);
 
-            const banner = { bannerName, bannerImage, bannerTitle, bannerDescription, bannerCouponCode, bannerCouponRate: bannerCouponRate, isActive};
+            const banner = { bannerName, bannerImage, bannerTitle, bannerDescription, bannerCouponCode, bannerCouponRate, isActive};
 
 
             // update user data in mongo DB
@@ -226,20 +226,20 @@ const AddBanner = () => {
                     <div className='mt-4'>
                         <label
                             className='block mb-2 text-sm font-medium  '
-                            htmlFor='bannerCouponRate'
+                            htmlFor='banner_CouponRate'
                         >
                             Coupon Rate
                         </label>
                         <input
-                            id='bannerCouponRate'
-                            autoComplete='bannerCouponRate'
-                            name='bannerCouponRate'
+                            id='banner_CouponRate'
+                            autoComplete='banner_CouponRate'
+                            name='banner_CouponRate'
                             className='block w-full px-4 py-2  border rounded-lg input input-bordered focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
-                            type='float'
-                            {...register("bannerCouponRate", { required: true })}
+                            type='number'
+                            {...register("banner_CouponRate", { required: true })}
                         />
                         <div className="mt-1 animate-pulse">
-                            {errors.bannerCouponRate && <span className="text-red-500">Please fill up Number of Coupon Rate field</span>}
+                            {errors.banner_CouponRate && <span className="text-red-500">Please fill up Number of Coupon Rate field</span>}
                         </div>
                     </div>
 
