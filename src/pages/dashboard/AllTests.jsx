@@ -2,7 +2,6 @@ import { AttentionSeeker } from "react-awesome-reveal";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { toast } from "react-toastify";
 import Loader from "../../components/shared/Loader";
 import { useEffect, useState } from "react";
 // import { useLocation, useNavigate } from "react-router-dom";
@@ -148,7 +147,6 @@ const AllTests = () => {
                     <thead>
                         <tr>
                             <th>Image</th>
-                            <th>Name</th>
                             <th>Title</th>
                             <th>Description</th>
                             <th>Coupon Code</th>
@@ -176,7 +174,6 @@ const AllTests = () => {
                     <tfoot>
                         <tr>
                             <th>Image</th>
-                            <th>Name</th>
                             <th>Title</th>
                             <th>Description</th>
                             <th>Coupon Code</th>

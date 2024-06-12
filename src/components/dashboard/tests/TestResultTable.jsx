@@ -3,27 +3,17 @@ import 'animate.css';
 import { Tooltip } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css';
 import { FaDownload } from 'react-icons/fa';
-import { CgBlock, CgUnblock } from 'react-icons/cg';
 import { jsPDF } from "jspdf";
-import useUsersProfile from '../../../hooks/useUsersProfile';
-import { FcApproval } from 'react-icons/fc';
 
-const AppointmentTable = ({ appointment, handleChangeStatus }) => {
+const TestResultTable = ({ appointmentsResult }) => {
 
-    const { _id, imageURL, testName, testsDescription, testPrice, appointmentsDate, userMail, reportStatus } = appointment;
+    const {  imageURL, testName, testsDescription, testPrice, appointmentsDate, userMail, reportStatus } = appointmentsResult;
 
-    const [userData, ,] = useUsersProfile()
 
     const handlePDF = () => {
 
         // Default export is a4 paper, portrait, using millimeters for units
-        const doc = new jsPDF(
-            // {
-            //     orientation: "landscape",
-            //     unit: "in",
-            //     format: [4, 2]
-            // }
-        );
+        const doc = new jsPDF();
 
         // Adding text to document
         doc.text(`Test Name: ${testName}`, 10, 10);
@@ -83,54 +73,8 @@ const AppointmentTable = ({ appointment, handleChangeStatus }) => {
                 <td>{testPrice}</td>
                 <td>{appointmentsDate}</td>
                 <td>{reportStatus}</td>
-                <th className={userData[0]?.isAdmin === true ? `` : 'hidden'}>{userMail}</th>
 
-                <td className='flex flex-col items-center gap-4 justify-center '>
-
-                    <div>
-                        <button
-                            onClick={() => handleChangeStatus(_id, reportStatus === 'pending' ? 'canceled' : 'pending')}
-                            disabled={userData[0]?.isAdmin === false && reportStatus !== 'pending'}
-                            data-tooltip-id="status-tooltip"
-                            data-tooltip-content="Cancel Appointment"
-                            className={`btn btn-circle btn-neutral hover:btn-error btn-xs ${reportStatus === 'pending' && 'animate__animated animate__tada animate__infinite'}  hover:animate-none`}>
-                            {
-                                reportStatus === 'pending' ?
-                                    <CgBlock
-                                        size={20}
-                                        className='text-primary group-hover:text-secondary'
-                                    />
-                                    : <CgUnblock
-                                        size={20}
-                                        className='text-primary group-hover:text-secondary'
-                                    />
-                            }
-                        </button>
-                        <Tooltip id="status-tooltip" />
-                    </div>
-
-                    {/* admin only */}
-                    {
-                        userData[0]?.isAdmin === true && <>
-                            <br />
-
-                            <div>
-                                <button
-                                    onClick={() => handleChangeStatus(_id, 'delivered')}
-                                    disabled={ reportStatus === 'delivered'}
-                                    data-tooltip-id="status-tooltip"
-                                    data-tooltip-content="Cancel Appointment"
-                                    className={`btn btn-circle btn-neutral hover:btn-error btn-xs ${reportStatus !== 'delivered' && 'animate__animated animate__tada animate__infinite'}  hover:animate-none`}>
-                                    <FcApproval
-                                        size={20}
-                                        className='text-primary group-hover:text-secondary'
-                                    />
-                                </button>
-                            </div>
-                        </>
-                    }
-
-                    <br />
+                <td className=''>
 
                     {/* pdf */}
                     <div>
@@ -153,9 +97,8 @@ const AppointmentTable = ({ appointment, handleChangeStatus }) => {
     );
 };
 
-AppointmentTable.propTypes = {
-    appointment: PropTypes.object,
-    handleChangeStatus: PropTypes.func,
+TestResultTable.propTypes = {
+    appointmentsResult: PropTypes.object,
 }
 
-export default AppointmentTable;
+export default TestResultTable;
