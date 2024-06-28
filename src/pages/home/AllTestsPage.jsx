@@ -38,18 +38,20 @@ const AllTestsPage = () => {
     const axiosCommon = useAxiosCommon();
 
     // pagination 
-    const { data: testsListsCount, isLoading: pageNumberLoading } = useQuery({
-        queryKey: ['testsListsCount', filter, currentPage, itemsPerPage,searchTerm],
-        queryFn: async () => {
-            const { data } = await axiosCommon(`/testsListsCount?page=${currentPage}&size=${itemsPerPage}&filter=${filter}&search=${searchTerm}`)
-            await setDataCount(data.counts)
-            return data
-        }
-    })
+    const {
+        // data: testsListsCount,
+        isLoading: pageNumberLoading } = useQuery({
+            queryKey: ['testsListsCount', filter, currentPage, itemsPerPage, searchTerm],
+            queryFn: async () => {
+                const { data } = await axiosCommon(`/testsListsCount?page=${currentPage}&size=${itemsPerPage}&filter=${filter}&search=${searchTerm}`)
+                await setDataCount(data.counts)
+                return data
+            }
+        })
 
     // data get
     const { data: testsListPagination, isLoading: dataLoading, refetch } = useQuery({
-        queryKey: ['testsListPagination', currentPage, itemsPerPage, filter, today,searchTerm],
+        queryKey: ['testsListPagination', currentPage, itemsPerPage, filter, today, searchTerm],
         queryFn: async () => {
             const { data } = await axiosCommon(`/testsListPagination?page=${currentPage}&size=${itemsPerPage}&filter=${filter}&today=${today}&search=${searchTerm}`)
             return data
@@ -103,7 +105,7 @@ const AllTestsPage = () => {
     }
 
     refetch();
-    
+
 
     // loader
     if (pageNumberLoading || dataLoading) {

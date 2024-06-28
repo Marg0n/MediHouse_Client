@@ -180,7 +180,7 @@ const Statistics = () => {
                             <SalesLineChart data={statData?.chartData} title={'Sales Over Time'} />
                         </div>
                         {/* Calender */}
-                        <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden'>
+                        <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2'>
                             <SalesLineChart data={statData?.chartData2} title={'pending vs canceled vs delivered'}/>
                         </div>
                     </div>

@@ -13,7 +13,7 @@ const options = {
     legend: { position: 'bottom' },
     series: [{ color: '#F43F5E' }],
 }
-    console.log(data, title)
+    // console.log(data, title)
     return (
         <>
             {

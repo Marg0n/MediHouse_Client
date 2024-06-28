@@ -11,23 +11,24 @@ import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
 // import { PropTypes } from 'prop-types';
 import { useTypewriter, Cursor } from 'react-simple-typewriter'
 import { AttentionSeeker } from "react-awesome-reveal";
-import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Loader from '../shared/Loader';
 import { useQuery } from '@tanstack/react-query';
+import useAxiosCommon from '../../hooks/useAxiosCommon';
 
 const Slider = () => {
 
-    const axiosSecure = useAxiosSecure()
+    const axiosCommon = useAxiosCommon()
 
     // banners
     const { data: bannersSlider=[], isLoading: bannerLoader} = useQuery({
-        queryKey: ['bannersSlider', ],
+        queryKey: ['bannersSliders', ],
         queryFn: async () => {
-            const { data } = await axiosSecure('/bannersSlider')
+            const { data } = await axiosCommon('/bannersSlider')
             return data
         }
     })
 
+    // console.log(bannersSlider)
 
     if (bannerLoader) {
         <Loader/>

@@ -18,7 +18,7 @@ const AllBanners = () => {
     const { data: banners, isLoading, refetch } = useQuery({
         queryKey: ['banners'],
         queryFn: async () => {
-            const { data } = await axiosSecure('/banners')
+            const { data } = await axiosSecure('/allBanners')
             return data
         }
     })

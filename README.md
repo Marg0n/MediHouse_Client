@@ -4,7 +4,7 @@ A robust Diagnostic Center Management System, a full-stack web application that 
 
 Live site:
 
-- [Live Site]()
+- [Live Site](https://medihouse.netlify.app)
 
 
 Resources:
@@ -36,3 +36,4 @@ Resources:
 - [Moment.js](https://momentjs.com)
 - [Swiper](https://swiperjs.com/get-started)
 - [framer-motion](https://www.framer.com/motion)
+- [Stripe](https://github.com/stripe/react-stripe-js)

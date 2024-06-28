@@ -7,6 +7,16 @@ import Swal from "sweetalert2";
 import Loader from "../../components/shared/Loader";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../../components/payments/CheckoutForm";
+import { useState } from "react";
+
+
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_API_KEY_CLIENT);
+
 
 
 const TestsDetails = () => {
@@ -14,6 +24,13 @@ const TestsDetails = () => {
     const { id } = useParams();
     const axiosSecure = useAxiosSecure()
     const { user, loading, setLoading } = useAuth();
+
+    // modal close/open
+    const [isOpen, setIsOpen] = useState(false);
+
+    const closeModal = () => {
+        setIsOpen(false);
+    }
 
     const { data: testsDetails = [], isLoading, refetch } = useQuery({
         queryKey: ['testsDetails', id],
@@ -109,10 +126,39 @@ const TestsDetails = () => {
                             </button>
                         </Link>
 
-                        <button
+                        {/* <button
                             onClick={handleBookNow}
                             disabled={testsDetails[0]?.test_slots <= 0}
                             className="btn btn-primary">
+                            Book Now
+                        </button> */}
+
+                        {/* Open the modal using document.getElementById('ID').showModal() method */}
+                        <dialog id="my_modal_1" className="modal" open={isOpen} onClose={closeModal}>
+
+                            <div className="modal-box">
+                                <h3 className="font-bold text-lg text-center mb-4">Pay to Book!</h3>
+                                {/* <p className="py-4">Press ESC key or click the button below to close</p> */}
+
+                                <Elements stripe={stripePromise}>
+                                    <CheckoutForm testPrice={testPrice} refetch={refetch} closeModal={closeModal} booking={booking} handleBookNow={handleBookNow}/>
+                                </Elements>
+
+                                <div className="modal-action">
+                                    <form method="dialog" className="w-full">
+                                        {/* if there is a button in form, it will close the modal */}
+                                        <button className="btn btn-error w-full">Close</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </dialog>
+                        <button
+                            className="btn btn-primary"
+                            disabled={testsDetails[0]?.test_slots <= 0}
+                            // onClick={() => document.getElementById('my_modal_1').showModal()}
+                            onClick={() => setIsOpen(true)}
+                        >
                             Book Now
                         </button>
 
