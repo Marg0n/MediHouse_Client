@@ -2,12 +2,12 @@
 
 A robust Diagnostic Center Management System, a full-stack web application that effectively manages appointments, patient records, test results, and administrative tasks for a diagnostic center.
 
-Live site:
+## Live site:
 
 - [Live Site](https://medihouse.netlify.app)
 
 
-Resources:
+## Resources:
 
 - [Prop-Types](https://www.npmjs.com/package/prop-types)
 - [Daisy UI](https://daisyui.com/)
