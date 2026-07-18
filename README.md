@@ -7,7 +7,30 @@ A robust Diagnostic Center Management System, a full-stack web application that 
 - [Live Site](https://medihouse.netlify.app)
 
 
-## Resources:
+## Cridentials:
+
+Admin email: margon@mail.com
+
+Admin password: mM123`
+
+
+## Related to the Project
+
+These are the related projects for this particular project:
+
+Client Side GitHub Repository Link: [Client](https://github.com/programming-hero-web-course1/b9a12-client-side-Marg0n)
+
+Server Side GitHub Repository Link: [Server](https://github.com/programming-hero-web-course1/b9a12-server-side-Marg0n)
+
+
+## Project Devs
+
+<a href="https://github.com/Marg0n">
+  <img src="https://contrib.rocks/image?repo=Marg0n/bible_verse" alt="contributors" title="contributors"/>
+</a>
+
+
+## Resources used:
 
 - [Prop-Types](https://www.npmjs.com/package/prop-types)
 - [Daisy UI](https://daisyui.com/)
